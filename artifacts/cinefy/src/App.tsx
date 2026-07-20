@@ -4,29 +4,29 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 
-const queryClient = new QueryClient();
+import { GlassFilter } from '@/components/GlassFilter';
+import { Navbar } from '@/components/Navbar';
+import { HomePage } from '@/pages/HomePage';
+import { SearchPage } from '@/pages/SearchPage';
+import { MovieDetailPage } from '@/pages/MovieDetailPage';
+import { ReviewsPage } from '@/pages/ReviewsPage';
+import { FavoritesPage } from '@/pages/FavoritesPage';
 
-function Home() {
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Replit Agent is building...
-        </h1>
-        <p className="mt-2 text-sm text-gray-600">
-          Your app will appear here once it's ready.
-        </p>
-      </div>
-    </div>
-  );
-}
+const queryClient = new QueryClient();
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Navbar />
+      <Switch>
+        <Route path="/" component={HomePage} />
+        <Route path="/movie/:id" component={MovieDetailPage} />
+        <Route path="/search" component={SearchPage} />
+        <Route path="/reviews" component={ReviewsPage} />
+        <Route path="/favorites" component={FavoritesPage} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 
@@ -35,6 +35,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+          <GlassFilter />
           <Router />
         </WouterRouter>
         <Toaster />
