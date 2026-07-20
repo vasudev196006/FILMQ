@@ -26,16 +26,16 @@ export const MovieCard: React.FC<{
   const [isHoveringRate, setIsHoveringRate] = useState(false);
 
   const innerContent = (
-    <div className="relative w-full h-full rounded-3xl overflow-hidden glass-panel group transition-transform duration-500 hover:scale-[1.03] transform-gpu" data-testid={`movie-card-${movie.id}`}>
+    <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/15 bg-slate-950 group transition-all duration-500 hover:scale-[1.03] hover:border-white/30 transform-gpu shadow-xl" data-testid={`movie-card-${movie.id}`}>
       {movie.poster && movie.poster.includes('null') ? (
-        <div className="absolute inset-0 bg-slate-900 flex items-center justify-center transition-transform duration-500 group-hover:scale-[1.10]">
+        <div className="absolute inset-0 bg-slate-900 flex items-center justify-center transition-transform duration-500 group-hover:scale-[1.08]">
           <Film className="size-16 text-white/20" />
         </div>
       ) : (
         <img
           src={movie.poster}
           alt={movie.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.10] transform-gpu"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.08] transform-gpu"
           loading="lazy"
         />
       )}
@@ -67,8 +67,8 @@ export const MovieCard: React.FC<{
           onClick={toggleFavorite}
           className={`size-9 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-xl transition-all duration-300 ${
             favorite
-              ? 'bg-rose-500/80 border border-rose-300/50 text-white shadow-[0_0_15px_rgba(244,63,94,0.6)] animate-heart-pop'
-              : 'bg-black/40 hover:bg-black/60 border border-white/20 text-white/70 hover:text-rose-400'
+              ? 'bg-[#E50914] text-white shadow-md animate-heart-pop'
+              : 'bg-black/40 hover:bg-black/60 border border-white/20 text-white/70 hover:text-[#E50914]'
           }`}
           title="Favorite"
           data-testid={`btn-favorite-${movie.id}`}
@@ -78,7 +78,7 @@ export const MovieCard: React.FC<{
       </div>
 
       {/* Glass Info Panel */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 p-4 glass-panel border-t border-white/10 rounded-b-3xl rounded-t-none bg-black/40 backdrop-blur-md">
+      <div className="absolute bottom-0 left-0 right-0 z-20 p-4 border-t border-white/15 rounded-b-3xl bg-black/60 backdrop-blur-xl">
         <div className="flex justify-between items-end gap-2">
           <div className="flex-1 overflow-hidden">
             <h3 className="text-white font-semibold truncate text-lg">{movie.title}</h3>
@@ -94,8 +94,8 @@ export const MovieCard: React.FC<{
           </div>
           
           <div className="relative" onMouseEnter={() => setIsHoveringRate(true)} onMouseLeave={() => setIsHoveringRate(false)}>
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-semibold text-amber-300 cursor-pointer backdrop-blur-md transition-all glass-pill">
-              ★ {movie.rating.toFixed(1)}
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/40 hover:bg-black/60 border border-white/15 text-xs font-bold text-white cursor-pointer backdrop-blur-md transition-all glass-pill">
+              <span className="text-[#E50914]">★</span> {movie.rating.toFixed(1)}
             </div>
             
             {/* Hover Popover for quick rate (Optional implementation) */}

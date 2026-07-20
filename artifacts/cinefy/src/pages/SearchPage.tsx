@@ -68,21 +68,34 @@ export const SearchPage: React.FC = () => {
       
       {/* Scroll-Reactive Liquid Glass Search Bar */}
       <div className="fixed top-24 left-1/2 -translate-x-1/2 z-40 w-full max-w-2xl px-4 pointer-events-none flex justify-center">
-        <div 
-          className="pointer-events-auto w-full relative group"
-          style={{ filter: "url('#container-glass')" }}
-        >
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="size-5 text-white/50" />
-          </div>
-          <input
-            type="search"
-            className="w-full bg-white/10 border border-white/20 backdrop-blur-2xl rounded-full py-4 pl-12 pr-4 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-2xl transition-all"
-            placeholder="Search movies, directors, actors..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            data-testid="search-input"
+        <div className="pointer-events-auto w-full relative group rounded-full overflow-hidden transition-transform duration-300 hover:scale-[1.01]">
+          
+          {/* Multi-stage 3D Liquid Glass Refraction Shadow Overlay */}
+          <div className="absolute inset-0 z-0 h-full w-full rounded-full pointer-events-none
+            shadow-[0_0_8px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3.5px_rgba(255,255,255,0.09),inset_-3px_-3px_0.5px_-3.5px_rgba(255,255,255,0.85),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.6),inset_0_0_6px_6px_rgba(255,255,255,0.12),inset_0_0_2px_2px_rgba(255,255,255,0.06),0_0_12px_rgba(0,0,0,0.15)]" 
           />
+
+          {/* Liquid Glass Backdrop Layer */}
+          <div 
+            className="absolute inset-0 -z-10 h-full w-full rounded-full bg-black/30 backdrop-blur-2xl border border-white/20 overflow-hidden"
+            style={{ backdropFilter: 'url("#container-glass")', WebkitBackdropFilter: 'url("#container-glass")' }}
+          />
+
+          {/* Crisp Foreground Search Input Content */}
+          <div className="relative z-10 flex items-center">
+            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-20">
+              <Search className="size-5 text-white/70" />
+            </div>
+            <input
+              type="search"
+              className="w-full bg-transparent rounded-full py-4 pl-14 pr-6 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#E50914]/60 transition-all font-medium"
+              placeholder="Search movies, directors, actors..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              data-testid="search-input"
+            />
+          </div>
+
         </div>
       </div>
 

@@ -32,7 +32,7 @@ export const FilterBar: React.FC<{
           onClick={() => onFilterChange({ selectedGenre: '' })}
           className={
             filterState.selectedGenre === ''
-              ? 'px-4 py-2 rounded-full text-xs font-semibold backdrop-blur-lg bg-indigo-600/80 text-white border border-indigo-400/50 shadow-[0_0_15px_rgba(99,102,241,0.4)] cursor-pointer whitespace-nowrap scale-105 transition-all'
+              ? 'px-4 py-2 rounded-full text-xs font-semibold bg-[#E50914] text-white shadow-md cursor-pointer whitespace-nowrap scale-105 transition-all'
               : 'px-4 py-2 rounded-full text-xs font-medium backdrop-blur-md bg-white/10 dark:bg-white/5 border border-white/15 text-slate-300 hover:bg-white/20 transition-all cursor-pointer whitespace-nowrap'
           }
         >
@@ -44,7 +44,7 @@ export const FilterBar: React.FC<{
             onClick={() => onFilterChange({ selectedGenre: genre.id.toString() })}
             className={
               filterState.selectedGenre === genre.id.toString()
-                ? 'px-4 py-2 rounded-full text-xs font-semibold backdrop-blur-lg bg-indigo-600/80 text-white border border-indigo-400/50 shadow-[0_0_15px_rgba(99,102,241,0.4)] cursor-pointer whitespace-nowrap scale-105 transition-all'
+                ? 'px-4 py-2 rounded-full text-xs font-semibold bg-[#E50914] text-white shadow-md cursor-pointer whitespace-nowrap scale-105 transition-all'
                 : 'px-4 py-2 rounded-full text-xs font-medium backdrop-blur-md bg-white/10 dark:bg-white/5 border border-white/15 text-slate-300 hover:bg-white/20 transition-all cursor-pointer whitespace-nowrap'
             }
           >
@@ -62,8 +62,8 @@ export const FilterBar: React.FC<{
               onClick={() => onFilterChange({ selectedDecade: decade.value })}
               className={`px-3 py-1.5 rounded-full transition-all cursor-pointer border ${
                 filterState.selectedDecade === decade.value
-                  ? 'border-indigo-400/80 bg-indigo-500/20 text-indigo-200'
-                  : 'border-transparent hover:border-indigo-400/40 hover:text-white'
+                  ? 'border-[#E50914] bg-[#E50914] text-white font-bold'
+                  : 'border-transparent hover:border-white/30 hover:text-white'
               }`}
             >
               {decade.label}

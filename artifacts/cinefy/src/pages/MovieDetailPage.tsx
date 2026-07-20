@@ -88,7 +88,7 @@ export const MovieDetailPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div className="min-h-screen bg-app pt-24 pb-12 flex justify-center"><div className="w-8 h-8 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div></div>;
+    return <div className="min-h-screen bg-app pt-24 pb-12 flex justify-center"><div className="w-8 h-8 rounded-full border-2 border-red-600 border-t-transparent animate-spin"></div></div>;
   }
 
   if (!movie) return <div className="min-h-screen bg-app text-white text-center pt-32">Movie not found</div>;
@@ -131,7 +131,7 @@ export const MovieDetailPage: React.FC = () => {
           {/* Info */}
           <div className="flex-1 flex flex-col justify-end pt-4">
             <h1 className="text-4xl md:text-5xl font-serif text-white mb-2">{movie.title}</h1>
-            {movie.tagline && <p className="text-xl text-indigo-300 italic font-serif mb-4">{movie.tagline}</p>}
+            {movie.tagline && <p className="text-xl text-red-400 italic font-serif mb-4">{movie.tagline}</p>}
             
             <div className="flex flex-wrap items-center gap-3 text-sm text-slate-300 mb-6">
               <span className="font-semibold text-white">{movie.release_date?.substring(0, 4)}</span>
@@ -140,7 +140,7 @@ export const MovieDetailPage: React.FC = () => {
               <span>•</span>
               <div className="flex flex-wrap gap-2">
                 {movie.genres.map(g => (
-                  <span key={g.id} className="glass-pill px-2.5 py-0.5 text-xs text-white/90">
+                  <span key={g.id} className="glass-pill px-3 py-1 text-xs text-white/90 font-medium">
                     {g.name}
                   </span>
                 ))}
@@ -157,8 +157,8 @@ export const MovieDetailPage: React.FC = () => {
                 <>
                   <div className="w-px h-10 bg-white/10"></div>
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl font-bold text-amber-400 mb-1">{avgCommunityRating.toFixed(1)}</span>
-                    <span className="text-[10px] uppercase tracking-wider text-amber-500/70">Community</span>
+                    <span className="text-2xl font-bold text-[#E50914] mb-1">{avgCommunityRating.toFixed(1)}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-slate-400">Community</span>
                   </div>
                 </>
               )}
@@ -170,7 +170,7 @@ export const MovieDetailPage: React.FC = () => {
                   onClick={toggleFavorite}
                   className={`size-12 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-xl transition-all duration-300 ${
                     favorite
-                      ? 'bg-rose-500/80 border border-rose-300/50 text-white shadow-[0_0_15px_rgba(244,63,94,0.6)] animate-heart-pop'
+                      ? 'bg-[#E50914] text-white shadow-md animate-heart-pop'
                       : 'bg-white/10 hover:bg-white/20 border border-white/20 text-white'
                   }`}
                   data-testid="detail-favorite"
@@ -271,7 +271,7 @@ export const MovieDetailPage: React.FC = () => {
                   type="text" 
                   value={reviewName}
                   onChange={e => setReviewName(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#E50914] focus:bg-white/10 transition-all"
                   placeholder="e.g. John Doe"
                   required
                 />
@@ -289,7 +289,7 @@ export const MovieDetailPage: React.FC = () => {
                 <textarea 
                   value={reviewText}
                   onChange={e => setReviewText(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all min-h-[120px] resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#E50914] focus:bg-white/10 transition-all min-h-[120px] resize-none"
                   placeholder="What did you think of the movie?"
                 ></textarea>
               </div>
@@ -298,7 +298,7 @@ export const MovieDetailPage: React.FC = () => {
                 <button 
                   type="button"
                   onClick={() => setReviewIsSpoiler(!reviewIsSpoiler)}
-                  className={`size-6 rounded flex items-center justify-center transition-all ${reviewIsSpoiler ? 'bg-rose-500 text-white' : 'bg-white/10 border border-white/20'}`}
+                  className={`size-6 rounded flex items-center justify-center transition-all ${reviewIsSpoiler ? 'bg-[#E50914] text-white' : 'bg-white/10 border border-white/20'}`}
                 >
                   {reviewIsSpoiler && <Check className="size-4" />}
                 </button>
@@ -310,10 +310,10 @@ export const MovieDetailPage: React.FC = () => {
               <button 
                 type="submit"
                 disabled={!reviewName.trim() || reviewRating === 0}
-                className="relative group overflow-hidden px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-300 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 opacity-90 group-hover:opacity-100 shadow-[0_0_20px_rgba(99,102,241,0.5)] z-0"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 z-0"></div>
+                <div className="absolute inset-0 bg-[#E50914] group-hover:bg-[#D81F26] shadow-lg transition-all z-0"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 z-0"></div>
                 <div className="relative z-10 flex items-center justify-center gap-2">
                   <Send className="size-4" /> Publish Review
                 </div>

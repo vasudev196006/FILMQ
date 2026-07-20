@@ -48,7 +48,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
         {!showMovieContext && (
           <div>
             <div className="flex items-center gap-2">
-              <div className="size-8 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-xs">
+              <div className="size-8 rounded-full bg-red-500/20 text-red-300 flex items-center justify-center font-bold text-xs">
                 {review.reviewerName.charAt(0).toUpperCase()}
               </div>
               <div>
@@ -70,7 +70,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
               </button>
             )}
             {onDelete && (
-              <button onClick={() => onDelete(review.id)} className="p-1.5 hover:bg-rose-500/20 rounded-md text-slate-400 hover:text-rose-400 transition-colors">
+              <button onClick={() => onDelete(review.id)} className="p-1.5 hover:bg-red-500/20 rounded-md text-slate-400 hover:text-red-400 transition-colors">
                 <Trash className="size-4" />
               </button>
             )}
@@ -84,10 +84,10 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
         </p>
 
         {isBlurred && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 backdrop-blur-xl bg-slate-950/60 p-4 border border-rose-500/30 rounded-xl z-10">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 backdrop-blur-xl bg-slate-950/60 p-4 border border-red-500/30 rounded-xl z-10">
             <button 
               onClick={() => setShroudOpen(true)}
-              className="px-4 py-2 rounded-full bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/40 text-rose-200 text-xs font-semibold cursor-pointer transition-all flex items-center gap-1.5"
+              className="px-4 py-2 rounded-full bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 text-red-200 text-xs font-semibold cursor-pointer transition-all flex items-center gap-1.5"
             >
               <Eye className="size-3.5" /> Reveal Spoiler
             </button>
@@ -105,7 +105,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
         </button>
         <button 
           onClick={() => onDownvote?.(review.id)}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium backdrop-blur-md bg-white/5 border border-white/10 hover:bg-rose-500/20 hover:border-rose-400/40 hover:text-rose-300 text-slate-400 transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium backdrop-blur-md bg-white/5 border border-white/10 hover:bg-red-500/20 hover:border-red-400/40 hover:text-red-300 text-slate-400 transition-all cursor-pointer"
         >
           <ThumbsDown className="size-3.5" />
           <span>{review.downvotes || 0}</span>

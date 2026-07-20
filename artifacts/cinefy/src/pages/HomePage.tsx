@@ -72,11 +72,11 @@ export const HomePage: React.FC = () => {
             <div className="container mx-auto px-4 md:px-8 relative z-10 w-full">
               <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="glass-pill px-3 py-1 flex items-center gap-1.5 text-xs font-bold text-white uppercase tracking-wider">
+                  <div className="px-3.5 py-1 flex items-center gap-1.5 text-xs font-bold text-white bg-[#E50914] rounded-full uppercase tracking-wider shadow-md">
                     #1 Trending
                   </div>
-                  <div className="glass-pill px-3 py-1 flex items-center gap-1 text-amber-300 text-xs font-bold">
-                    <Star className="size-3.5 fill-amber-300" />
+                  <div className="glass-pill px-3.5 py-1 flex items-center gap-1.5 text-white text-xs font-bold">
+                    <Star className="size-3.5 fill-[#E50914] text-[#E50914]" />
                     {heroMovie.vote_average.toFixed(1)} TMDB
                   </div>
                 </div>
@@ -91,9 +91,7 @@ export const HomePage: React.FC = () => {
                 
                 <div className="flex items-center gap-4">
                   <Link href={`/movie/${heroMovie.id}`} className="cursor-pointer">
-                    <div className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 flex items-center gap-2">
-                      <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 opacity-90 group-hover:opacity-100 shadow-[0_0_20px_rgba(99,102,241,0.5)] z-0"></div>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 z-0"></div>
+                    <div className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 flex items-center gap-2 bg-[#E50914] hover:bg-[#D81F26] shadow-lg">
                       <Play className="size-4 relative z-10 fill-white" />
                       <span className="relative z-10">Movie Details</span>
                     </div>
@@ -135,9 +133,11 @@ export const HomePage: React.FC = () => {
       )}
 
       <footer className="container mx-auto px-4 py-12 mt-12 border-t border-white/5 text-center text-slate-500">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Film className="size-5" />
-          <span className="font-serif text-xl text-white">Cinefy</span>
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="size-9 rounded-full overflow-hidden border border-white/20 shrink-0 flex items-center justify-center bg-black/60">
+            <img src="/logo.png" alt="FILMQ Logo" className="w-full h-full object-cover" />
+          </div>
+          <span className="font-serif text-xl text-white font-bold">FILMQ</span>
         </div>
         <p className="text-sm">Powered by TMDB API. Built for cinephiles.</p>
       </footer>

@@ -4,7 +4,14 @@ export const GlassFilter: React.FC = () => {
   return (
     <svg className="fixed pointer-events-none w-0 h-0" aria-hidden="true" data-testid="glass-filter">
       <defs>
-        <filter id="container-glass">
+        <filter
+          id="container-glass"
+          x="0%"
+          y="0%"
+          width="100%"
+          height="100%"
+          colorInterpolationFilters="sRGB"
+        >
           <feTurbulence 
             id="liquid-turbulence" 
             type="fractalNoise" 
@@ -23,7 +30,7 @@ export const GlassFilter: React.FC = () => {
             id="liquid-displacement" 
             in="SourceGraphic" 
             in2="blurredNoise" 
-            scale="0" /* Controlled by JS */
+            scale="35" 
             xChannelSelector="R" 
             yChannelSelector="B" 
             result="displaced" 

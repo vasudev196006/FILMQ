@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'wouter';
-import { Film } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const [location] = useLocation();
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -20,30 +12,24 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
-        scrolled 
-          ? 'bg-black/60 backdrop-blur-xl border-white/10 shadow-lg py-3' 
-          : 'bg-transparent border-transparent py-5'
-      }`}
-    >
-      <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group cursor-pointer">
-          <div className="size-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:scale-110 transition-transform">
-            <Film className="size-4 text-white" />
+    <nav className="fixed top-0 left-0 right-0 z-50 py-4 pointer-events-none transition-all duration-300">
+      <div className="container mx-auto px-4 md:px-8 flex items-center justify-between pointer-events-auto">
+        <Link href="/" className="flex items-center gap-2.5 group cursor-pointer glass-panel px-3.5 py-1.5 rounded-full border border-white/15 bg-black/40 backdrop-blur-2xl shadow-2xl">
+          <div className="size-8 rounded-full overflow-hidden border border-white/20 shrink-0 flex items-center justify-center bg-black/60 group-hover:scale-105 transition-transform">
+            <img src="/logo.png" alt="FILMQ Logo" className="w-full h-full object-cover" />
           </div>
-          <span className="font-serif text-2xl tracking-wide text-white">Cinefy</span>
+          <span className="font-serif text-xl tracking-wider text-white font-bold">FILMQ</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1 bg-white/5 backdrop-blur-md rounded-full border border-white/10 p-1">
+        <div className="hidden md:flex items-center gap-1.5 glass-panel bg-black/40 backdrop-blur-2xl rounded-full border border-white/15 p-1.5 shadow-2xl">
           {navLinks.map(link => {
             const active = location === link.href;
             return (
               <Link key={link.href} href={link.href} className="cursor-pointer">
-                <span className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all block ${
+                <span className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all block ${
                   active 
-                    ? 'bg-white/15 text-white shadow-sm' 
-                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                    ? 'bg-[#E50914] text-white shadow-md' 
+                    : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}>
                   {link.label}
                 </span>
@@ -52,13 +38,12 @@ export const Navbar: React.FC = () => {
           })}
         </div>
 
-        {/* Mobile menu could be added here, but keep it simple with bottom nav or horizontal scroll on mobile for now */}
-        <div className="flex md:hidden items-center gap-4 overflow-x-auto no-scrollbar mask-linear-fade pb-1 text-sm font-medium text-slate-300 max-w-[200px]">
+        <div className="flex md:hidden items-center gap-3 overflow-x-auto no-scrollbar glass-panel bg-black/40 backdrop-blur-2xl border border-white/15 rounded-full px-3 py-1.5 text-sm font-medium text-slate-300">
           {navLinks.map(link => {
             const active = location === link.href;
             return (
               <Link key={link.href} href={link.href} className="cursor-pointer whitespace-nowrap">
-                <span className={active ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" : ""}>
+                <span className={active ? "text-white font-bold text-[#E50914]" : ""}>
                   {link.label}
                 </span>
               </Link>

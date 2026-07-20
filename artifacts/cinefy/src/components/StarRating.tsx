@@ -13,7 +13,7 @@ export const StarRating = ({ value, onChange, readOnly = false, total = 10, clas
           return (
             <Star
               key={i}
-              className={`size-6 cursor-pointer transition-all ${isFilled ? 'fill-amber-400 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]' : 'fill-transparent text-slate-500/50'} ${readOnly ? 'cursor-default size-4' : ''}`}
+              className={`size-6 cursor-pointer transition-all ${isFilled ? 'fill-[#E50914] text-[#E50914]' : 'fill-transparent text-slate-600/50'} ${readOnly ? 'cursor-default size-4' : ''}`}
               onClick={() => !readOnly && onChange?.(ratingValue)}
               onMouseEnter={() => !readOnly && setHover(ratingValue)}
               data-testid={`star-${ratingValue}`}
@@ -22,7 +22,7 @@ export const StarRating = ({ value, onChange, readOnly = false, total = 10, clas
         })}
       </div>
       {!readOnly && (
-        <span className="text-xs font-medium text-amber-300 min-h-4">
+        <span className="text-xs font-semibold text-[#E50914] min-h-4">
           {(hover || value) > 0 ? `${hover || value} / ${total}` : 'Rate this movie'}
         </span>
       )}

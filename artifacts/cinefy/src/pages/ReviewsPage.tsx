@@ -87,7 +87,7 @@ export const ReviewsPage: React.FC = () => {
                     <textarea 
                       value={editForm.text}
                       onChange={e => setEditForm(prev => ({ ...prev, text: e.target.value }))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all min-h-[100px] resize-none text-sm"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-red-500 focus:bg-white/10 transition-all min-h-[100px] resize-none text-sm"
                     />
                   </div>
 
@@ -95,7 +95,7 @@ export const ReviewsPage: React.FC = () => {
                     <button 
                       type="button"
                       onClick={() => setEditForm(prev => ({ ...prev, isSpoiler: !prev.isSpoiler }))}
-                      className={`size-5 rounded flex items-center justify-center transition-all ${editForm.isSpoiler ? 'bg-rose-500 text-white' : 'bg-white/10 border border-white/20'}`}
+                      className={`size-5 rounded flex items-center justify-center transition-all ${editForm.isSpoiler ? 'bg-[#E50914] text-white' : 'bg-white/10 border border-white/20'}`}
                     >
                       {editForm.isSpoiler && <Check className="size-3" />}
                     </button>
@@ -107,7 +107,7 @@ export const ReviewsPage: React.FC = () => {
                   <div className="flex items-center gap-2 mt-2 pt-3 border-t border-white/5">
                     <button 
                       onClick={saveEdit}
-                      className="px-4 py-1.5 rounded-full bg-indigo-500 text-white text-xs font-medium hover:bg-indigo-600 transition-all flex items-center gap-1.5"
+                      className="px-4 py-1.5 rounded-full bg-[#E50914] text-white text-xs font-medium hover:bg-[#D81F26] transition-all flex items-center gap-1.5"
                     >
                       <Check className="size-3.5" /> Save
                     </button>
