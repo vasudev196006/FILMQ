@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Cinefy"
+version = "1.0.0"
+id = "artifacts/cinefy"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23209
+
+[services.development]
+run = "pnpm --filter @workspace/cinefy run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/cinefy", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/cinefy/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23209"
+BASE_PATH = "/"
