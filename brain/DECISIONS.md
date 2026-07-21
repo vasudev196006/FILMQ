@@ -38,3 +38,17 @@
 - **Rejected Alternatives**:
   - *Manual TypeScript interface duplication across frontend and backend*: Rejected due to high risk of drift and out-of-sync types.
 - **Consequences**: Type safety enforced at build time (`pnpm run typecheck`).
+
+---
+
+## [ADR-004] Lock Permanent Design System to Blood Red & Deep Dark Charcoal Slate Gray
+
+- **Date**: 2026-07-21
+- **Status**: Accepted (LOCKED by User Directive)
+- **Context**: The user tested multiple theme palettes (light mode alabaster, editorial amber, neon dark obsidian) and explicitly finalized **Blood Red (`#A30000` / `355 100% 32%`)** accent on **Deep Dark Charcoal Slate Gray (`#13161C` / `220 16% 9%`)** as the exact desired design.
+- **Decision**: Lock `artifacts/cinefy/src/index.css` (`:root` & `.dark`) and `artifacts/cinefy/src/lib/theme.ts` permanently to Blood Red & Deep Dark Slate Charcoal Gray. Any future theme changes must fall back to this exact theme configuration.
+- **Rejected Alternatives**:
+  - *Bright Light Mode Alabaster*: Rejected (too harsh on user's eyes).
+  - *Pure Pitch-Black Obsidian*: Rejected (too flat, lacking modern cinematic depth).
+  - *Amber / Orange Accents*: Rejected (distracting to user focus).
+- **Consequences**: Provides an eye-soothing, high-contrast, iconic movie platform theme that is locked across session state and Project Brain.

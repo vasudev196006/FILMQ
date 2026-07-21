@@ -25,20 +25,20 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
   const isBlurred = review.isSpoiler && !shroudOpen;
 
   return (
-    <div className="glass-panel p-5 rounded-2xl flex flex-col gap-4 text-left w-full relative group" data-testid={`review-card-${review.id}`}>
+    <div className="glass-panel p-5 rounded-2xl flex flex-col gap-4 text-left w-full relative group shadow-md" data-testid={`review-card-${review.id}`}>
       
       {showMovieContext && (
-        <div className="flex items-center gap-3 border-b border-white/10 pb-3 mb-1">
+        <div className="flex items-center gap-3 border-b border-black/10 dark:border-white/10 pb-3 mb-1">
           {review.moviePosterPath ? (
             <img src={`https://image.tmdb.org/t/p/w92${review.moviePosterPath}`} alt={review.movieTitle} className="w-10 h-14 object-cover rounded-md" />
           ) : (
-            <div className="w-10 h-14 bg-white/5 rounded-md" />
+            <div className="w-10 h-14 bg-black/5 dark:bg-white/5 rounded-md" />
           )}
           <div>
-            <h4 className="text-sm font-semibold text-white">{review.movieTitle}</h4>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{review.movieTitle}</h4>
             <div className="flex items-center gap-2 mt-1">
               <StarRating value={review.rating} readOnly className="items-start" />
-              <span className="text-xs text-slate-400">• {format(new Date(review.createdAt), 'MMM d, yyyy')}</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">• {format(new Date(review.createdAt), 'MMM d, yyyy')}</span>
             </div>
           </div>
         </div>
@@ -48,12 +48,12 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
         {!showMovieContext && (
           <div>
             <div className="flex items-center gap-2">
-              <div className="size-8 rounded-full bg-red-500/20 text-red-300 flex items-center justify-center font-bold text-xs">
+              <div className="size-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xs">
                 {review.reviewerName.charAt(0).toUpperCase()}
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-white">{review.reviewerName}</h4>
-                <p className="text-xs text-slate-400">{format(new Date(review.createdAt), 'MMM d, yyyy')}</p>
+                <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{review.reviewerName}</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{format(new Date(review.createdAt), 'MMM d, yyyy')}</p>
               </div>
             </div>
             <div className="mt-2">
@@ -65,12 +65,12 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
         {(onEdit || onDelete) && (
           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             {onEdit && (
-              <button onClick={() => onEdit(review.id)} className="p-1.5 hover:bg-white/10 rounded-md text-slate-400 hover:text-white transition-colors">
+              <button onClick={() => onEdit(review.id)} className="p-1.5 hover:bg-black/5 dark:hover:bg-white/10 rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
                 <Edit2 className="size-4" />
               </button>
             )}
             {onDelete && (
-              <button onClick={() => onDelete(review.id)} className="p-1.5 hover:bg-red-500/20 rounded-md text-slate-400 hover:text-red-400 transition-colors">
+              <button onClick={() => onDelete(review.id)} className="p-1.5 hover:bg-red-500/20 rounded-md text-slate-500 dark:text-slate-400 hover:text-red-500 transition-colors">
                 <Trash className="size-4" />
               </button>
             )}
@@ -79,7 +79,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
       </div>
 
       <div className="relative rounded-xl overflow-hidden mt-1">
-        <p className={`text-slate-200 text-sm leading-relaxed whitespace-pre-wrap ${isBlurred ? 'filter blur-md select-none pointer-events-none opacity-40 transition-all duration-500' : 'transition-all duration-500 blur-0 opacity-100'}`}>
+        <p className={`text-slate-800 dark:text-slate-200 text-sm leading-relaxed whitespace-pre-wrap ${isBlurred ? 'filter blur-md select-none pointer-events-none opacity-40 transition-all duration-500' : 'transition-all duration-500 blur-0 opacity-100'}`}>
           {review.text}
         </p>
 
@@ -95,26 +95,26 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
         )}
       </div>
 
-      <div className="flex items-center gap-2 mt-2 pt-3 border-t border-white/5">
+      <div className="flex items-center gap-2 mt-2 pt-3 border-t border-black/10 dark:border-white/5">
         <button 
           onClick={() => onUpvote?.(review.id)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium backdrop-blur-md bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-400/40 hover:text-emerald-300 text-slate-300 transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium backdrop-blur-md bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-primary/15 hover:border-primary/40 hover:text-primary text-slate-700 dark:text-slate-300 transition-all cursor-pointer"
         >
           <ThumbsUp className="size-3.5" />
           <span>{review.upvotes || 0}</span>
         </button>
         <button 
           onClick={() => onDownvote?.(review.id)}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium backdrop-blur-md bg-white/5 border border-white/10 hover:bg-red-500/20 hover:border-red-400/40 hover:text-red-300 text-slate-400 transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium backdrop-blur-md bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-primary/15 hover:border-primary/40 hover:text-primary text-slate-600 dark:text-slate-400 transition-all cursor-pointer"
         >
           <ThumbsDown className="size-3.5" />
           <span>{review.downvotes || 0}</span>
         </button>
-        <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/5 border border-white/10 hover:bg-white/15 text-slate-300 transition-all cursor-pointer">
+        <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-slate-700 dark:text-slate-300 transition-all cursor-pointer">
           <MessageCircle className="size-3.5" />
           Reply
         </button>
-        <button className="p-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 text-slate-400 hover:text-white transition-all cursor-pointer ml-auto">
+        <button className="p-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer ml-auto">
           <Share2 className="size-3.5" />
         </button>
       </div>

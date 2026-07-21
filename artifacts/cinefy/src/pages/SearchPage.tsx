@@ -7,7 +7,7 @@ import { FilterBar, FilterState } from '@/components/FilterBar';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { EmptyState } from '@/components/EmptyState';
 import { Search, Film } from 'lucide-react';
-import { useScrollDistortion } from '@/components/GlassFilter';
+import GlassSurface from '@/components/GlassSurface';
 
 export const SearchPage: React.FC = () => {
   const [, setLocation] = useLocation();
@@ -19,8 +19,6 @@ export const SearchPage: React.FC = () => {
     selectedDecade: null,
     viewMode: 'grid',
   });
-
-  useScrollDistortion();
 
   // Debounce search
   useEffect(() => {
@@ -66,37 +64,39 @@ export const SearchPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-app pt-32 pb-20">
       
-      {/* Scroll-Reactive Liquid Glass Search Bar */}
+      {/* React Bits GlassSurface Search Bar */}
       <div className="fixed top-24 left-1/2 -translate-x-1/2 z-40 w-full max-w-2xl px-4 pointer-events-none flex justify-center">
-        <div className="pointer-events-auto w-full relative group rounded-full overflow-hidden transition-transform duration-300 hover:scale-[1.01]">
-          
-          {/* Multi-stage 3D Liquid Glass Refraction Shadow Overlay */}
-          <div className="absolute inset-0 z-0 h-full w-full rounded-full pointer-events-none
-            shadow-[0_0_8px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3.5px_rgba(255,255,255,0.09),inset_-3px_-3px_0.5px_-3.5px_rgba(255,255,255,0.85),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.6),inset_0_0_6px_6px_rgba(255,255,255,0.12),inset_0_0_2px_2px_rgba(255,255,255,0.06),0_0_12px_rgba(0,0,0,0.15)]" 
-          />
-
-          {/* Liquid Glass Backdrop Layer */}
-          <div 
-            className="absolute inset-0 -z-10 h-full w-full rounded-full bg-black/30 backdrop-blur-2xl border border-white/20 overflow-hidden"
-            style={{ backdropFilter: 'url("#container-glass")', WebkitBackdropFilter: 'url("#container-glass")' }}
-          />
-
-          {/* Crisp Foreground Search Input Content */}
-          <div className="relative z-10 flex items-center">
-            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-20">
+        <GlassSurface
+          width="100%"
+          height={56}
+          borderRadius={28}
+          borderWidth={0.07}
+          brightness={55}
+          opacity={0.85}
+          blur={10}
+          displace={0}
+          backgroundOpacity={0}
+          saturation={1.2}
+          distortionScale={-150}
+          redOffset={2}
+          greenOffset={8}
+          blueOffset={15}
+          className="pointer-events-auto shadow-2xl transition-transform duration-300 hover:scale-[1.01]"
+        >
+          <div className="relative w-full flex items-center h-full">
+            <div className="absolute left-4 flex items-center pointer-events-none z-20">
               <Search className="size-5 text-white/70" />
             </div>
             <input
               type="search"
-              className="w-full bg-transparent rounded-full py-4 pl-14 pr-6 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#E50914]/60 transition-all font-medium"
-              placeholder="Search movies, directors, actors..."
+              className="w-full bg-transparent border-none py-3 pl-12 pr-6 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-[#E50914]/60 rounded-full font-medium"
+              placeholder="Search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               data-testid="search-input"
             />
           </div>
-
-        </div>
+        </GlassSurface>
       </div>
 
       <div className="container mx-auto px-4 md:px-8 mt-12">

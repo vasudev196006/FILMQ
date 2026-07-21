@@ -12,9 +12,9 @@ const HorizontalScrollRow: React.FC<{ title: string, movies: TMDBMovie[], isLoad
   return (
     <section className="py-8">
       <div className="container mx-auto px-4 md:px-8">
-        <h2 className="text-2xl font-serif text-white mb-6 flex items-center gap-3">
+        <h2 className="text-2xl font-serif text-foreground mb-6 flex items-center gap-3">
           {title}
-          <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-4"></div>
+          <div className="flex-1 h-px bg-gradient-to-r from-foreground/15 to-transparent ml-4"></div>
         </h2>
         
         {isLoading ? (
@@ -65,40 +65,40 @@ export const HomePage: React.FC = () => {
                 alt={heroMovie.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0D14] via-[#0A0D14]/80 to-transparent"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0A0D14] via-[#0A0D14]/50 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent"></div>
             </div>
 
             <div className="container mx-auto px-4 md:px-8 relative z-10 w-full">
               <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="px-3.5 py-1 flex items-center gap-1.5 text-xs font-bold text-white bg-[#E50914] rounded-full uppercase tracking-wider shadow-md">
+                  <div className="px-3.5 py-1 flex items-center gap-1.5 text-xs font-bold text-white bg-primary rounded-full uppercase tracking-wider shadow-md">
                     #1 Trending
                   </div>
-                  <div className="glass-pill px-3.5 py-1 flex items-center gap-1.5 text-white text-xs font-bold">
-                    <Star className="size-3.5 fill-[#E50914] text-[#E50914]" />
+                  <div className="glass-pill px-3.5 py-1 flex items-center gap-1.5 text-foreground text-xs font-bold border border-black/10 dark:border-white/20">
+                    <Star className="size-3.5 fill-primary text-primary" />
                     {heroMovie.vote_average.toFixed(1)} TMDB
                   </div>
                 </div>
                 
-                <h1 className="text-5xl md:text-7xl font-serif text-white mb-4 leading-tight drop-shadow-lg">
+                <h1 className="text-5xl md:text-7xl font-serif text-foreground mb-4 leading-tight drop-shadow-lg">
                   {heroMovie.title}
                 </h1>
                 
-                <p className="text-lg text-slate-300 mb-8 line-clamp-3 leading-relaxed max-w-xl">
+                <p className="text-lg text-foreground/80 mb-8 line-clamp-3 leading-relaxed max-w-xl">
                   {heroMovie.overview}
                 </p>
                 
                 <div className="flex items-center gap-4">
                   <Link href={`/movie/${heroMovie.id}`} className="cursor-pointer">
-                    <div className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 flex items-center gap-2 bg-[#E50914] hover:bg-[#D81F26] shadow-lg">
+                    <div className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 flex items-center gap-2 bg-primary hover:opacity-90 shadow-lg">
                       <Play className="size-4 relative z-10 fill-white" />
                       <span className="relative z-10">Movie Details</span>
                     </div>
                   </Link>
                   
                   <Link href={`/movie/${heroMovie.id}`} className="cursor-pointer">
-                    <div className="px-6 py-3 rounded-full glass-panel hover:bg-white/10 text-white text-sm font-semibold transition-all flex items-center gap-2 border border-white/20">
+                    <div className="px-6 py-3 rounded-full glass-panel hover:bg-black/10 dark:hover:bg-white/10 text-foreground text-sm font-semibold transition-all flex items-center gap-2 border border-black/15 dark:border-white/20">
                       <Edit3 className="size-4" />
                       Write a Review
                     </div>
@@ -120,9 +120,9 @@ export const HomePage: React.FC = () => {
       {/* Community Reviews */}
       {recentReviews.length > 0 && (
         <section className="py-12 container mx-auto px-4 md:px-8">
-          <h2 className="text-2xl font-serif text-white mb-8 flex items-center gap-3">
+          <h2 className="text-2xl font-serif text-foreground mb-8 flex items-center gap-3">
             Recent Community Reviews
-            <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-4"></div>
+            <div className="flex-1 h-px bg-gradient-to-r from-foreground/15 to-transparent ml-4"></div>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {recentReviews.map(review => (
@@ -132,12 +132,12 @@ export const HomePage: React.FC = () => {
         </section>
       )}
 
-      <footer className="container mx-auto px-4 py-12 mt-12 border-t border-white/5 text-center text-slate-500">
+      <footer className="container mx-auto px-4 py-12 mt-12 border-t border-black/10 dark:border-white/5 text-center text-slate-500">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="size-9 rounded-full overflow-hidden border border-white/20 shrink-0 flex items-center justify-center bg-black/60">
+          <div className="size-9 rounded-full overflow-hidden border border-black/10 dark:border-white/20 shrink-0 flex items-center justify-center bg-black/10 dark:bg-black/60">
             <img src="/logo.png" alt="FILMQ Logo" className="w-full h-full object-cover" />
           </div>
-          <span className="font-serif text-xl text-white font-bold">FILMQ</span>
+          <span className="font-serif text-xl text-foreground font-bold">FILMQ</span>
         </div>
         <p className="text-sm">Powered by TMDB API. Built for cinephiles.</p>
       </footer>

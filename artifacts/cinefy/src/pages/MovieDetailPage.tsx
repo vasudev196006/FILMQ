@@ -130,17 +130,17 @@ export const MovieDetailPage: React.FC = () => {
 
           {/* Info */}
           <div className="flex-1 flex flex-col justify-end pt-4">
-            <h1 className="text-4xl md:text-5xl font-serif text-white mb-2">{movie.title}</h1>
-            {movie.tagline && <p className="text-xl text-red-400 italic font-serif mb-4">{movie.tagline}</p>}
+            <h1 className="text-4xl md:text-5xl font-serif text-foreground mb-2">{movie.title}</h1>
+            {movie.tagline && <p className="text-xl text-primary font-serif italic mb-4">{movie.tagline}</p>}
             
-            <div className="flex flex-wrap items-center gap-3 text-sm text-slate-300 mb-6">
-              <span className="font-semibold text-white">{movie.release_date?.substring(0, 4)}</span>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-foreground/80 mb-6">
+              <span className="font-semibold text-foreground">{movie.release_date?.substring(0, 4)}</span>
               <span>•</span>
               <span>{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</span>
               <span>•</span>
               <div className="flex flex-wrap gap-2">
                 {movie.genres.map(g => (
-                  <span key={g.id} className="glass-pill px-3 py-1 text-xs text-white/90 font-medium">
+                  <span key={g.id} className="glass-pill px-3 py-1 text-xs text-foreground font-medium border border-black/10 dark:border-white/15">
                     {g.name}
                   </span>
                 ))}
@@ -149,29 +149,29 @@ export const MovieDetailPage: React.FC = () => {
 
             <div className="flex items-center gap-6 mb-8">
               <div className="flex flex-col items-center">
-                <span className="text-2xl font-bold text-white mb-1">{movie.vote_average.toFixed(1)}</span>
-                <span className="text-[10px] uppercase tracking-wider text-slate-400">TMDB Score</span>
+                <span className="text-2xl font-bold text-foreground mb-1">{movie.vote_average.toFixed(1)}</span>
+                <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">TMDB Score</span>
               </div>
               
               {avgCommunityRating !== null && (
                 <>
-                  <div className="w-px h-10 bg-white/10"></div>
+                  <div className="w-px h-10 bg-black/10 dark:bg-white/10"></div>
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl font-bold text-[#E50914] mb-1">{avgCommunityRating.toFixed(1)}</span>
-                    <span className="text-[10px] uppercase tracking-wider text-slate-400">Community</span>
+                    <span className="text-2xl font-bold text-primary mb-1">{avgCommunityRating.toFixed(1)}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">Community</span>
                   </div>
                 </>
               )}
 
-              <div className="w-px h-10 bg-white/10"></div>
+              <div className="w-px h-10 bg-black/10 dark:bg-white/10"></div>
               
               <div className="flex items-center gap-3">
                 <button
                   onClick={toggleFavorite}
                   className={`size-12 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-xl transition-all duration-300 ${
                     favorite
-                      ? 'bg-[#E50914] text-white shadow-md animate-heart-pop'
-                      : 'bg-white/10 hover:bg-white/20 border border-white/20 text-white'
+                      ? 'bg-primary text-white shadow-md animate-heart-pop'
+                      : 'bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 border border-black/15 dark:border-white/20 text-foreground'
                   }`}
                   data-testid="detail-favorite"
                 >
@@ -182,8 +182,8 @@ export const MovieDetailPage: React.FC = () => {
                   onClick={toggleWatchlist}
                   className={`size-12 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-xl transition-all duration-300 ${
                     watchlisted
-                      ? 'bg-emerald-500/80 border border-emerald-300/50 text-white shadow-[0_0_12px_rgba(16,185,129,0.5)]'
-                      : 'bg-white/10 hover:bg-white/20 border border-white/20 text-white'
+                      ? 'bg-primary border border-primary/50 text-white shadow-md'
+                      : 'bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 border border-black/15 dark:border-white/20 text-foreground'
                   }`}
                   data-testid="detail-watchlist"
                 >
@@ -192,7 +192,7 @@ export const MovieDetailPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="glass-panel p-6 rounded-2xl text-slate-300 leading-relaxed max-w-3xl">
+            <div className="glass-panel p-6 rounded-2xl text-slate-800 dark:text-slate-200 leading-relaxed max-w-3xl border border-black/10 dark:border-white/15">
               {movie.overview}
             </div>
           </div>
@@ -201,21 +201,21 @@ export const MovieDetailPage: React.FC = () => {
         {/* Cast */}
         {movie.credits?.cast && movie.credits.cast.length > 0 && (
           <div className="mb-16">
-            <h2 className="text-2xl font-serif text-white mb-6">Top Cast</h2>
+            <h2 className="text-2xl font-serif text-foreground mb-6">Top Cast</h2>
             <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
               {movie.credits.cast.slice(0, 10).map(actor => (
                 <div key={actor.id} className="min-w-[120px] max-w-[120px] text-center">
-                  <div className="size-24 mx-auto rounded-full overflow-hidden mb-3 border-2 border-white/10">
+                  <div className="size-24 mx-auto rounded-full overflow-hidden mb-3 border-2 border-black/10 dark:border-white/10">
                     {actor.profile_path ? (
                       <img src={`${IMAGE_BASE}w185${actor.profile_path}`} alt={actor.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-white/5 flex items-center justify-center text-white/30 text-xl font-bold">
+                      <div className="w-full h-full bg-black/5 dark:bg-white/5 flex items-center justify-center text-foreground/40 text-xl font-bold">
                         {actor.name.charAt(0)}
                       </div>
                     )}
                   </div>
-                  <h4 className="text-sm font-semibold text-white truncate">{actor.name}</h4>
-                  <p className="text-xs text-slate-400 truncate mt-1">{actor.character}</p>
+                  <h4 className="text-sm font-semibold text-foreground truncate">{actor.name}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-1">{actor.character}</p>
                 </div>
               ))}
             </div>
@@ -225,8 +225,8 @@ export const MovieDetailPage: React.FC = () => {
         {/* Trailer */}
         {trailer && (
           <div className="mb-16">
-            <h2 className="text-2xl font-serif text-white mb-6">Official Trailer</h2>
-            <div className="max-w-4xl glass-panel p-2 rounded-3xl overflow-hidden aspect-video">
+            <h2 className="text-2xl font-serif text-foreground mb-6">Official Trailer</h2>
+            <div className="max-w-4xl glass-panel p-2 rounded-3xl overflow-hidden aspect-video border border-black/10 dark:border-white/15">
               <iframe 
                 src={`https://www.youtube.com/embed/${trailer.key}?controls=1&rel=0&playsinline=1&modestbranding=1`}
                 title="Trailer"
@@ -240,7 +240,7 @@ export const MovieDetailPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8 lg:gap-16">
           {/* Reviews List */}
           <div>
-            <h2 className="text-2xl font-serif text-white mb-6">Community Reviews ({reviews.length})</h2>
+            <h2 className="text-2xl font-serif text-foreground mb-6">Community Reviews ({reviews.length})</h2>
             <div className="space-y-4">
               {reviews.length > 0 ? (
                 reviews.map(review => (
@@ -253,7 +253,7 @@ export const MovieDetailPage: React.FC = () => {
                   />
                 ))
               ) : (
-                <div className="glass-panel p-8 text-center rounded-2xl text-slate-400">
+                <div className="glass-panel p-8 text-center rounded-2xl text-slate-500 dark:text-slate-400 border border-black/10 dark:border-white/15">
                   No reviews yet. Be the first to review this movie!
                 </div>
               )}
@@ -262,34 +262,34 @@ export const MovieDetailPage: React.FC = () => {
 
           {/* Write a Review Form */}
           <div className="sticky top-24">
-            <h2 className="text-2xl font-serif text-white mb-6">Write a Review</h2>
-            <form onSubmit={handleReviewSubmit} className="glass-panel p-6 rounded-2xl flex flex-col gap-5">
+            <h2 className="text-2xl font-serif text-foreground mb-6">Write a Review</h2>
+            <form onSubmit={handleReviewSubmit} className="glass-panel p-6 rounded-2xl flex flex-col gap-5 border border-black/10 dark:border-white/15">
               
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Your Name</label>
                 <input 
                   type="text" 
                   value={reviewName}
                   onChange={e => setReviewName(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#E50914] focus:bg-white/10 transition-all"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                   placeholder="e.g. John Doe"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Rating</label>
-                <div className="glass-panel inline-flex p-3 rounded-xl">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Rating</label>
+                <div className="glass-panel inline-flex p-3 rounded-xl border border-black/10 dark:border-white/15">
                   <StarRating value={reviewRating} onChange={setReviewRating} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Review</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Review</label>
                 <textarea 
                   value={reviewText}
                   onChange={e => setReviewText(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#E50914] focus:bg-white/10 transition-all min-h-[120px] resize-none"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all min-h-[120px] resize-none"
                   placeholder="What did you think of the movie?"
                 ></textarea>
               </div>
@@ -298,11 +298,11 @@ export const MovieDetailPage: React.FC = () => {
                 <button 
                   type="button"
                   onClick={() => setReviewIsSpoiler(!reviewIsSpoiler)}
-                  className={`size-6 rounded flex items-center justify-center transition-all ${reviewIsSpoiler ? 'bg-[#E50914] text-white' : 'bg-white/10 border border-white/20'}`}
+                  className={`size-6 rounded flex items-center justify-center transition-all ${reviewIsSpoiler ? 'bg-primary text-white' : 'bg-black/5 dark:bg-white/10 border border-black/15 dark:border-white/20'}`}
                 >
                   {reviewIsSpoiler && <Check className="size-4" />}
                 </button>
-                <span className="text-sm text-slate-300 cursor-pointer select-none" onClick={() => setReviewIsSpoiler(!reviewIsSpoiler)}>
+                <span className="text-sm text-slate-700 dark:text-slate-300 cursor-pointer select-none" onClick={() => setReviewIsSpoiler(!reviewIsSpoiler)}>
                   Contains spoilers
                 </span>
               </div>
@@ -310,10 +310,8 @@ export const MovieDetailPage: React.FC = () => {
               <button 
                 type="submit"
                 disabled={!reviewName.trim() || reviewRating === 0}
-                className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 mt-2 disabled:opacity-50 disabled:cursor-not-allowed bg-primary hover:opacity-90 shadow-md"
               >
-                <div className="absolute inset-0 bg-[#E50914] group-hover:bg-[#D81F26] shadow-lg transition-all z-0"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 z-0"></div>
                 <div className="relative z-10 flex items-center justify-center gap-2">
                   <Send className="size-4" /> Publish Review
                 </div>

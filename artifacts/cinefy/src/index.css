@@ -50,88 +50,88 @@
 }
 
 :root {
-  --background: 210 20% 98%;
-  --foreground: 220 20% 6%;
+  --background: 220 16% 9%;
+  --foreground: 210 20% 95%;
   
-  --card: 0 0% 100%;
-  --card-foreground: 220 20% 6%;
-  --card-border: 220 15% 88%;
+  --card: 220 16% 13%;
+  --card-foreground: 210 20% 95%;
+  --card-border: 220 14% 20%;
   
-  --popover: 0 0% 100%;
-  --popover-foreground: 220 20% 6%;
-  --popover-border: 220 15% 88%;
+  --popover: 220 16% 13%;
+  --popover-foreground: 210 20% 95%;
+  --popover-border: 220 14% 20%;
   
-  --primary: 356 85% 52%;
+  --primary: 355 100% 32%;
   --primary-foreground: 0 0% 100%;
-  --primary-border: rgba(229, 9, 20, 0.35);
+  --primary-border: rgba(163, 0, 0, 0.4);
   
-  --secondary: 356 80% 45%;
+  --secondary: 355 90% 28%;
   --secondary-foreground: 0 0% 100%;
-  --secondary-border: rgba(229, 9, 20, 0.25);
+  --secondary-border: rgba(122, 0, 0, 0.3);
   
-  --muted: 220 15% 92%;
-  --muted-foreground: 215 20% 40%;
-  --muted-border: hsl(220 15% 85% / 0.2);
+  --muted: 220 14% 15%;
+  --muted-foreground: 215 15% 70%;
+  --muted-border: rgba(255, 255, 255, 0.1);
   
-  --accent: 356 85% 52%;
+  --accent: 355 100% 32%;
   --accent-foreground: 0 0% 100%;
-  --accent-border: rgba(229, 9, 20, 0.35);
+  --accent-border: rgba(163, 0, 0, 0.4);
   
   --destructive: 0 84% 50%;
   --destructive-foreground: 210 40% 98%;
   --destructive-border: hsl(0 84% 50% / 0.2);
   
-  --border: 220 15% 88%;
-  --input: 220 15% 88%;
-  --ring: 356 85% 52%;
+  --border: 220 14% 20%;
+  --input: 220 14% 20%;
+  --ring: 355 100% 32%;
 
   --app-font-sans: 'Inter', sans-serif;
   --app-font-serif: 'DM Serif Display', serif;
   --radius: 0.5rem;
 
-  --glass-surface-base: rgba(0, 0, 0, 0.05);
-  --glass-surface-accent: rgba(0, 0, 0, 0.1);
-  --glass-border: rgba(0, 0, 0, 0.12);
+  --glass-surface-base: rgba(19, 22, 28, 0.85);
+  --glass-surface-accent: rgba(28, 32, 39, 0.90);
+  --glass-border: rgba(255, 255, 255, 0.12);
 }
 
 .dark {
-  --background: 220 20% 6%;
-  --foreground: 210 40% 98%;
+  --background: 220 16% 9%;
+  --foreground: 210 20% 95%;
   
-  --card: 220 20% 9%;
-  --card-foreground: 210 40% 98%;
-  --card-border: 220 15% 18%;
+  --card: 220 16% 13%;
+  --card-foreground: 210 20% 95%;
+  --card-border: 220 14% 20%;
   
-  --popover: 220 20% 9%;
-  --popover-foreground: 210 40% 98%;
-  --popover-border: 220 15% 18%;
+  --popover: 220 16% 13%;
+  --popover-foreground: 210 20% 95%;
+  --popover-border: 220 14% 20%;
 
-  --primary: 356 85% 52%;
+  --primary: 355 100% 32%;
   --primary-foreground: 0 0% 100%;
-  --primary-border: hsl(356 85% 52% / 0.25);
+  --primary-border: rgba(163, 0, 0, 0.4);
   
-  --secondary: 356 75% 45%;
+  --secondary: 355 90% 28%;
   --secondary-foreground: 0 0% 100%;
-  --secondary-border: hsl(356 75% 45% / 0.25);
+  --secondary-border: rgba(122, 0, 0, 0.3);
   
-  --muted: 220 15% 15%;
-  --muted-foreground: 215 20% 65%;
-  --muted-border: hsl(220 15% 15% / 0.2);
+  --muted: 220 14% 15%;
+  --muted-foreground: 215 15% 70%;
+  --muted-border: rgba(255, 255, 255, 0.1);
   
-  --accent: 356 85% 52%;
+  --accent: 355 100% 32%;
   --accent-foreground: 0 0% 100%;
-  --accent-border: hsl(356 85% 52% / 0.25);
+  --accent-border: rgba(163, 0, 0, 0.4);
   
   --destructive: 0 84% 50%;
   --destructive-foreground: 210 40% 98%;
   --destructive-border: hsl(0 84% 50% / 0.2);
   
-  --border: 220 15% 18%;
-  --input: 220 15% 18%;
-  --ring: 356 85% 52%;
+  --border: 220 14% 20%;
+  --input: 220 14% 20%;
+  --ring: 355 100% 32%;
 
-  --glass-surface-base: rgba(255, 255, 255, 0.08);
-  --glass-surface-accent: rgba(255, 255, 255, 0.16);
+  --glass-surface-base: rgba(19, 22, 28, 0.85);
+  --glass-surface-accent: rgba(28, 32, 39, 0.90);
   --glass-border: rgba(255, 255, 255, 0.12);
 }
 

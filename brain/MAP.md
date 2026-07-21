@@ -74,3 +74,4 @@ User Browser
 - **Backend entry**: `artifacts/api-server/src/index.ts`
 - **Database schema**: `lib/db/src/schema/index.ts`
 - **OpenAPI specification**: `lib/api-spec/openapi.yaml`
+- **Design System (LOCKED)**: `artifacts/cinefy/src/index.css` & `artifacts/cinefy/src/lib/theme.ts` (Blood Red `#A30000` & Dark Charcoal Slate Gray `#13161C`)
