@@ -113,9 +113,7 @@ export const SearchPage: React.FC = () => {
             className={`grid gap-6 ${
               filterState.viewMode === 'grid' 
                 ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' 
-                : filterState.viewMode === 'list'
-                ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                : 'columns-2 md:columns-3 lg:columns-4 space-y-6' /* simplified masonry */
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
             }`}
           >
             {displayedMovies.map(movie => {
@@ -123,7 +121,7 @@ export const SearchPage: React.FC = () => {
               const movieGenres = movie.genre_ids.map(id => genres.find(g => g.id === id)?.name).filter(Boolean) as string[];
               
               return (
-                <div key={movie.id} className={filterState.viewMode === 'masonry' ? 'break-inside-avoid' : ''}>
+                <div key={movie.id}>
                   <MovieCard 
                     movie={{
                       id: movie.id.toString(),

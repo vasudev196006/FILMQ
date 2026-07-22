@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTrending, fetchPopular, fetchTopRated, IMAGE_BASE, TMDBMovie } from '@/lib/tmdb';
 import { MovieCard } from '@/components/MovieCard';
 import { ReviewCard } from '@/components/ReviewCard';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
-import { getReviews } from '@/lib/storage';
+import { getReviews, Review } from '@/lib/storage';
 import { Link } from 'wouter';
 import { Star, Play, Edit3, Film } from 'lucide-react';
 
@@ -51,7 +51,18 @@ export const HomePage: React.FC = () => {
   const { data: topRated, isLoading: isLoadingTopRated } = useQuery({ queryKey: ['topRated'], queryFn: fetchTopRated });
 
   const heroMovie = trending?.[0];
-  const recentReviews = getReviews().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 6);
+  const [recentReviews, setRecentReviews] = useState<Review[]>([]);
+
+  useEffect(() => {
+    getReviews()
+      .then((reviews) => {
+        const sorted = reviews
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .slice(0, 6);
+        setRecentReviews(sorted);
+      })
+      .catch(console.error);
+  }, []);
 
   return (
     <div className="min-h-screen bg-app pb-20">

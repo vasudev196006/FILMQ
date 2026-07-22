@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'wouter';
 import { fetchMovieDetails, IMAGE_BASE } from '@/lib/tmdb';
@@ -22,7 +22,13 @@ export const MovieDetailPage: React.FC = () => {
     movie ? { title: movie.title, posterPath: movie.poster_path || '' } : undefined
   );
 
-  const [reviews, setReviews] = useState<Review[]>(() => getReviewsForMovie(Number(id)));
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  useEffect(() => {
+    if (id) {
+      getReviewsForMovie(Number(id)).then(setReviews).catch(console.error);
+    }
+  }, [id]);
   
   // Review Form State
   const [reviewName, setReviewName] = useState('');
@@ -36,7 +42,7 @@ export const MovieDetailPage: React.FC = () => {
     ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length 
     : null;
 
-  const handleReviewSubmit = (e: React.FormEvent) => {
+  const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!movie || !reviewName.trim() || reviewRating === 0) return;
 
@@ -54,36 +60,56 @@ export const MovieDetailPage: React.FC = () => {
       downvotes: 0
     };
 
-    addReview(newReview);
-    setReviews(getReviewsForMovie(movie.id));
-    
-    // Reset form
-    setReviewName('');
-    setReviewRating(0);
-    setReviewText('');
-    setReviewIsSpoiler(false);
-  };
-
-  const handleUpvote = (reviewId: string) => {
-    const rev = reviews.find(r => r.id === reviewId);
-    if (rev) {
-      updateReview(reviewId, { upvotes: (rev.upvotes || 0) + 1 });
-      setReviews(getReviewsForMovie(Number(id)));
+    try {
+      await addReview(newReview);
+      const updated = await getReviewsForMovie(movie.id);
+      setReviews(updated);
+      
+      // Reset form
+      setReviewName('');
+      setReviewRating(0);
+      setReviewText('');
+      setReviewIsSpoiler(false);
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const handleDownvote = (reviewId: string) => {
+  const handleUpvote = async (reviewId: string) => {
     const rev = reviews.find(r => r.id === reviewId);
     if (rev) {
-      updateReview(reviewId, { downvotes: (rev.downvotes || 0) + 1 });
-      setReviews(getReviewsForMovie(Number(id)));
+      try {
+        await updateReview(reviewId, { upvotes: (rev.upvotes || 0) + 1 });
+        const updated = await getReviewsForMovie(Number(id));
+        setReviews(updated);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
-  const handleDeleteReview = (reviewId: string) => {
+  const handleDownvote = async (reviewId: string) => {
+    const rev = reviews.find(r => r.id === reviewId);
+    if (rev) {
+      try {
+        await updateReview(reviewId, { downvotes: (rev.downvotes || 0) + 1 });
+        const updated = await getReviewsForMovie(Number(id));
+        setReviews(updated);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const handleDeleteReview = async (reviewId: string) => {
     if (confirm('Are you sure you want to delete this review?')) {
-      deleteReview(reviewId);
-      setReviews(getReviewsForMovie(Number(id)));
+      try {
+        await deleteReview(reviewId);
+        const updated = await getReviewsForMovie(Number(id));
+        setReviews(updated);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 

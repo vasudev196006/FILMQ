@@ -1,11 +1,11 @@
 import React from 'react';
-import { LayoutGrid, List, AlignJustify } from 'lucide-react';
+import { LayoutGrid, List } from 'lucide-react';
 
 export interface FilterState {
   selectedGenre: string;
   sortBy: 'trending' | 'top_rated' | 'recent' | 'release_year';
   selectedDecade: string | null;
-  viewMode: 'grid' | 'masonry' | 'list';
+  viewMode: 'grid' | 'list';
 }
 
 export const FilterBar: React.FC<{
@@ -94,17 +94,6 @@ export const FilterBar: React.FC<{
           >
             <List className="size-3.5" />
             <span className="hidden sm:inline">List</span>
-          </button>
-          <button
-            onClick={() => onFilterChange({ viewMode: 'masonry' })}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
-              filterState.viewMode === 'masonry'
-                ? 'bg-white/20 dark:bg-white/15 text-white shadow-[inset_1px_1px_1px_rgba(255,255,255,0.4),0_2px_8px_rgba(0,0,0,0.2)] border border-white/20'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <AlignJustify className="size-3.5" />
-            <span className="hidden sm:inline">Masonry</span>
           </button>
         </div>
       </div>

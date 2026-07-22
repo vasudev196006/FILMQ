@@ -13,4 +13,8 @@
 - **Theme Color**: Iconic **Netflix Crimson Red (`#E50914`)**, Obsidian Slate, and Crisp White.
 - **Circular Logo Container**: Enclosed `logo.png` inside circular image wrappers (`size-8 rounded-full overflow-hidden`).
 - **Three.js Physical Liquid Glass Lens**: Replaced FBO plane texture with `MeshPhysicalMaterial` (`transmission={0.98}`, `ior={1.25}`, `clearcoat={1}`, `roughness={0.05}`) and Three.js ambient & directional light sources in `src/components/FluidGlass.tsx`, completely removing all black wrapper boxes and rendering a crystal-clear 3D liquid glass sphere lens.
-- **Dev Server**: Live and running on [http://localhost:5173/](http://localhost:5173/).
+- **Full-Stack Server**: Live and serving built frontend + backend APIs on [http://localhost:5000/](http://localhost:5000/).
+- **Vite Dev Server**: Live and running on [http://localhost:5173/](http://localhost:5173/) (with HMR, proxying `/api` to port 5000).
+- **Database Schema**: Configured for PostgreSQL tables (`reviews` & `favorites`).
+
+

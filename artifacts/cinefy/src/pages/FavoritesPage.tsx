@@ -8,15 +8,20 @@ import { IMAGE_BASE } from '@/lib/tmdb';
 export const FavoritesPage: React.FC = () => {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
 
+  const loadFavorites = async () => {
+    try {
+      const favs = await getFavorites();
+      setFavorites(favs.reverse()); // newest first usually
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     loadFavorites();
     window.addEventListener('storage', loadFavorites);
     return () => window.removeEventListener('storage', loadFavorites);
   }, []);
-
-  const loadFavorites = () => {
-    setFavorites(getFavorites().reverse()); // newest first usually
-  };
 
   return (
     <div className="min-h-screen bg-app pt-32 pb-20">

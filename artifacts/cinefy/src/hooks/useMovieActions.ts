@@ -2,27 +2,37 @@ import { useState, useEffect } from 'react';
 import { isFavorite, addFavorite, removeFavorite, isWatchlisted, addToWatchlist, removeFromWatchlist, subscribeToStorage } from '@/lib/storage';
 
 export function useMovieActions(movieId: number, movieDetails?: { title: string, posterPath: string }) {
-  const [favorite, setFavorite] = useState(() => isFavorite(movieId));
+  const [favorite, setFavorite] = useState(false);
   const [watchlisted, setWatchlisted] = useState(() => isWatchlisted(movieId));
 
+  const checkFavorite = async () => {
+    try {
+      const fav = await isFavorite(movieId);
+      setFavorite(fav);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
-    setFavorite(isFavorite(movieId));
+    checkFavorite();
     setWatchlisted(isWatchlisted(movieId));
+    
     const unsub = subscribeToStorage(() => {
-      setFavorite(isFavorite(movieId));
+      checkFavorite();
       setWatchlisted(isWatchlisted(movieId));
     });
     return unsub;
   }, [movieId]);
 
-  const toggleFavorite = (e?: React.MouseEvent) => {
+  const toggleFavorite = async (e?: React.MouseEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
     if (favorite) {
-      removeFavorite(movieId);
+      await removeFavorite(movieId);
       setFavorite(false);
     } else if (movieDetails) {
-      addFavorite({
+      await addFavorite({
         movieId,
         movieTitle: movieDetails.title,
         posterPath: movieDetails.posterPath,
@@ -30,7 +40,6 @@ export function useMovieActions(movieId: number, movieDetails?: { title: string,
       });
       setFavorite(true);
     }
-    // trigger storage event manually in case it's same window
     window.dispatchEvent(new Event('storage'));
   };
 

@@ -27,64 +27,86 @@ export interface WatchlistItem {
 }
 
 const STORAGE_KEYS = {
-  REVIEWS: 'cinefy_reviews',
-  FAVORITES: 'cinefy_favorites',
   WATCHLIST: 'cinefy_watchlist',
 };
 
 // --- REVIEWS ---
 
-export function getReviews(): Review[] {
-  const data = localStorage.getItem(STORAGE_KEYS.REVIEWS);
-  return data ? JSON.parse(data) : [];
+export async function getReviews(): Promise<Review[]> {
+  const res = await fetch('/api/reviews');
+  if (!res.ok) throw new Error('Failed to fetch reviews');
+  return res.json();
 }
 
-export function getReviewsForMovie(movieId: number): Review[] {
-  return getReviews().filter(r => r.movieId === movieId);
+export async function getReviewsForMovie(movieId: number): Promise<Review[]> {
+  const res = await fetch(`/api/reviews/${movieId}`);
+  if (!res.ok) throw new Error('Failed to fetch reviews for movie');
+  return res.json();
 }
 
-export function addReview(review: Review): void {
-  const reviews = getReviews();
-  reviews.push(review);
-  localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
+export async function addReview(review: Review): Promise<void> {
+  const res = await fetch('/api/reviews', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(review),
+  });
+  if (!res.ok) throw new Error('Failed to add review');
 }
 
-export function updateReview(id: string, changes: Partial<Review>): void {
-  const reviews = getReviews();
-  const index = reviews.findIndex(r => r.id === id);
-  if (index !== -1) {
-    reviews[index] = { ...reviews[index], ...changes };
-    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
-  }
+export async function updateReview(id: string, changes: Partial<Review>): Promise<void> {
+  const res = await fetch(`/api/reviews/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(changes),
+  });
+  if (!res.ok) throw new Error('Failed to update review');
 }
 
-export function deleteReview(id: string): void {
-  const reviews = getReviews().filter(r => r.id !== id);
-  localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
+export async function deleteReview(id: string): Promise<void> {
+  const res = await fetch(`/api/reviews/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Failed to delete review');
 }
 
 // --- FAVORITES ---
 
-export function getFavorites(): Favorite[] {
-  const data = localStorage.getItem(STORAGE_KEYS.FAVORITES);
-  return data ? JSON.parse(data) : [];
+export async function getFavorites(): Promise<Favorite[]> {
+  const res = await fetch('/api/favorites');
+  if (!res.ok) throw new Error('Failed to fetch favorites');
+  const data = await res.json();
+  return data.map((fav: any) => ({
+    movieId: fav.movieId,
+    movieTitle: fav.movieTitle,
+    posterPath: fav.posterPath,
+    addedAt: fav.createdAt || fav.addedAt,
+  }));
 }
 
-export function addFavorite(favorite: Favorite): void {
-  const favorites = getFavorites();
-  if (!favorites.some(f => f.movieId === favorite.movieId)) {
-    favorites.push(favorite);
-    localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
+export async function addFavorite(favorite: Favorite): Promise<void> {
+  const res = await fetch('/api/favorites', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(favorite),
+  });
+  if (!res.ok) throw new Error('Failed to add favorite');
+}
+
+export async function removeFavorite(movieId: number): Promise<void> {
+  const res = await fetch(`/api/favorites/${movieId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Failed to remove favorite');
+}
+
+export async function isFavorite(movieId: number): Promise<boolean> {
+  try {
+    const favorites = await getFavorites();
+    return favorites.some(f => f.movieId === movieId);
+  } catch (e) {
+    console.error(e);
+    return false;
   }
-}
-
-export function removeFavorite(movieId: number): void {
-  const favorites = getFavorites().filter(f => f.movieId !== movieId);
-  localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
-}
-
-export function isFavorite(movieId: number): boolean {
-  return getFavorites().some(f => f.movieId === movieId);
 }
 
 // --- WATCHLIST ---

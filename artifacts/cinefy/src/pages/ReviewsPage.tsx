@@ -10,22 +10,30 @@ export const ReviewsPage: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<{ rating: number; text: string; isSpoiler: boolean }>({ rating: 0, text: '', isSpoiler: false });
 
+  const loadReviews = async () => {
+    try {
+      const allReviews = await getReviews();
+      allReviews.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setReviews(allReviews);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     loadReviews();
     window.addEventListener('storage', loadReviews);
     return () => window.removeEventListener('storage', loadReviews);
   }, []);
 
-  const loadReviews = () => {
-    const allReviews = getReviews();
-    allReviews.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    setReviews(allReviews);
-  };
-
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this review?')) {
-      deleteReview(id);
-      loadReviews();
+      try {
+        await deleteReview(id);
+        await loadReviews();
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 
@@ -42,11 +50,15 @@ export const ReviewsPage: React.FC = () => {
     setEditingId(null);
   };
 
-  const saveEdit = () => {
+  const saveEdit = async () => {
     if (editingId) {
-      updateReview(editingId, editForm);
-      setEditingId(null);
-      loadReviews();
+      try {
+        await updateReview(editingId, editForm);
+        setEditingId(null);
+        await loadReviews();
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 
@@ -93,9 +105,9 @@ export const ReviewsPage: React.FC = () => {
 
                   <div className="flex items-center gap-3">
                     <button 
-                      type="button"
-                      onClick={() => setEditForm(prev => ({ ...prev, isSpoiler: !prev.isSpoiler }))}
-                      className={`size-5 rounded flex items-center justify-center transition-all ${editForm.isSpoiler ? 'bg-[#E50914] text-white' : 'bg-white/10 border border-white/20'}`}
+                       type="button"
+                       onClick={() => setEditForm(prev => ({ ...prev, isSpoiler: !prev.isSpoiler }))}
+                       className={`size-5 rounded flex items-center justify-center transition-all ${editForm.isSpoiler ? 'bg-[#E50914] text-white' : 'bg-white/10 border border-white/20'}`}
                     >
                       {editForm.isSpoiler && <Check className="size-3" />}
                     </button>
