@@ -7,15 +7,17 @@
 
 ## Active Focus
 
-- Refined **Three.js <FluidGlass /> 3D Lens** optics in [FluidGlass.tsx](file:///c:/projects/filmq/FILMQ/artifacts/cinefy/src/components/FluidGlass.tsx) to eliminate all black background artifacts.
+- Integrated full-stack PostgreSQL database connection and removed the masonry search page layout mode.
 
 ## What was accomplished
 
-1. Replaced static FBO plane texture in [FluidGlass.tsx](file:///c:/projects/filmq/FILMQ/artifacts/cinefy/src/components/FluidGlass.tsx) with a high-transmission Three.js `meshPhysicalMaterial` sphere illuminated by ambient & directional light sources (`transmission={0.98}`, `clearcoat={1}`, `ior={1.25}`).
-2. Wrapped the indicator in [Navbar.tsx](file:///c:/projects/filmq/FILMQ/artifacts/cinefy/src/components/Navbar.tsx) with a crisp glass rim border (`border-white/50 backdrop-blur-xl`) and transparent background.
-3. Verified workspace TypeScript compilation (`pnpm run typecheck`).
-4. Dev server active on [http://localhost:5173/](http://localhost:5173/).
+1. Created database schemas for `reviews` and `favorites` tables in [schema/index.ts](file:///c:/projects/filmq/FILMQ/lib/db/src/schema/index.ts).
+2. Implemented Express CRUD endpoints in [reviews.ts](file:///c:/projects/filmq/FILMQ/artifacts/api-server/src/routes/reviews.ts) and [favorites.ts](file:///c:/projects/filmq/FILMQ/artifacts/api-server/src/routes/favorites.ts).
+3. Configured Express static serving of built frontend assets in [app.ts](file:///c:/projects/filmq/FILMQ/artifacts/api-server/src/app.ts) to run the full-stack app on a single port.
+4. Converted frontend [storage.ts](file:///c:/projects/filmq/FILMQ/artifacts/cinefy/src/lib/storage.ts) and components to run async database fetches.
+5. Removed the masonry view option from [FilterBar.tsx](file:///c:/projects/filmq/FILMQ/artifacts/cinefy/src/components/FilterBar.tsx) and [SearchPage.tsx](file:///c:/projects/filmq/FILMQ/artifacts/cinefy/src/pages/SearchPage.tsx).
+6. Configured root and frontend `.env` settings, verified build compiles successfully, and pushed all committed code to GitHub.
 
 ## Next Immediate Action
 
-- Ready for user instructions!
+- Ready for next user instructions on new features!
