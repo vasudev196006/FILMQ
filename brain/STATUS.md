@@ -16,5 +16,9 @@
 - **Full-Stack Server**: Live and serving built frontend + backend APIs on [http://localhost:5000/](http://localhost:5000/).
 - **Vite Dev Server**: Live and running on [http://localhost:5173/](http://localhost:5173/) (with HMR, proxying `/api` to port 5000).
 - **Database Schema**: Configured for PostgreSQL tables (`reviews` & `favorites`).
+- **TMDB Discover Integration**: Integrated the dynamic discover API on the Search page, allowing users to browse movies from any decade or genre from the entire TMDB catalog instead of only seeing simulated 2026 trending movies.
+- **Rich Home Page Layout**: Added "Sci-Fi & Fantasy Hits", "Action Blockbusters", "Upcoming Releases", and "Comedy Hits" horizontal scroll rows (configured to show exactly 4 full cards on desktop, 3 on tablet, and 2 on mobile), alongside a beautiful interactive "Browse by Genre" card grid.
+- **Navbar & Highlights**: Created the new `Highlight.tsx` tab highlights component and styled the navigation bar hover indicators to match the FilterBar layout toggle's premium glassmorphism design.
+- **Search Filters**: Replaced red active background states with the premium layout segment glassmorphism capsule on active genre selectors, decade pills, and selectors, while leaving `#1 Trending` red.
 
 

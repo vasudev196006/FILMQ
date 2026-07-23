@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import FluidGlass from '@/components/FluidGlass';
 
 export const Navbar: React.FC = () => {
   const [location] = useLocation();
@@ -47,28 +46,17 @@ export const Navbar: React.FC = () => {
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
-                  {/* 3D Liquid Glass Sphere Lens Indicator */}
+                  {/* Glassmorphic hover transition indicator */}
                   {isTarget && (
                     <motion.div
                       layoutId="fluid-glass-nav-pill"
-                      className="absolute inset-0 rounded-full overflow-hidden -z-10 pointer-events-none border border-white/50 backdrop-blur-xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.85),0_4px_16px_rgba(255,255,255,0.15)] bg-white/5"
+                      className="absolute inset-0 rounded-full bg-white/20 dark:bg-white/15 border border-white/20 shadow-[inset_1px_1px_1px_rgba(255,255,255,0.4),0_2px_8px_rgba(0,0,0,0.2)] backdrop-blur-md -z-10 pointer-events-none"
                       transition={{
                         type: 'spring',
                         stiffness: 450,
                         damping: 35
                       }}
-                    >
-                      <FluidGlass
-                        mode="lens"
-                        lensProps={{
-                          scale: 1.6,
-                          ior: 1.25,
-                          thickness: 1.2,
-                          roughness: 0.05
-                        }}
-                        className="w-full h-full"
-                      />
-                    </motion.div>
+                    />
                   )}
                   {link.label}
                 </div>
@@ -86,7 +74,7 @@ export const Navbar: React.FC = () => {
                 {active && (
                   <motion.div
                     layoutId="fluid-glass-mobile-pill"
-                    className="absolute inset-0 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.5),0_4px_12px_rgba(0,0,0,0.3)] -z-10"
+                    className="absolute inset-0 rounded-full bg-black/60 border border-white/10 shadow-2xl -z-10"
                     transition={{ type: 'spring', stiffness: 450, damping: 35 }}
                   />
                 )}

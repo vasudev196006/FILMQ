@@ -32,7 +32,7 @@ export const FilterBar: React.FC<{
           onClick={() => onFilterChange({ selectedGenre: '' })}
           className={
             filterState.selectedGenre === ''
-              ? 'px-4 py-2 rounded-full text-xs font-semibold bg-[#E50914] text-white shadow-md cursor-pointer whitespace-nowrap scale-105 transition-all'
+              ? 'px-4 py-2 rounded-full text-xs font-semibold bg-white/20 dark:bg-white/15 text-white border border-white/20 shadow-[inset_1px_1px_1px_rgba(255,255,255,0.4),0_2px_8px_rgba(0,0,0,0.2)] backdrop-blur-md cursor-pointer whitespace-nowrap scale-105 transition-all'
               : 'px-4 py-2 rounded-full text-xs font-medium backdrop-blur-md bg-white/10 dark:bg-white/5 border border-white/15 text-slate-300 hover:bg-white/20 transition-all cursor-pointer whitespace-nowrap'
           }
         >
@@ -44,7 +44,7 @@ export const FilterBar: React.FC<{
             onClick={() => onFilterChange({ selectedGenre: genre.id.toString() })}
             className={
               filterState.selectedGenre === genre.id.toString()
-                ? 'px-4 py-2 rounded-full text-xs font-semibold bg-[#E50914] text-white shadow-md cursor-pointer whitespace-nowrap scale-105 transition-all'
+                ? 'px-4 py-2 rounded-full text-xs font-semibold bg-white/20 dark:bg-white/15 text-white border border-white/20 shadow-[inset_1px_1px_1px_rgba(255,255,255,0.4),0_2px_8px_rgba(0,0,0,0.2)] backdrop-blur-md cursor-pointer whitespace-nowrap scale-105 transition-all'
                 : 'px-4 py-2 rounded-full text-xs font-medium backdrop-blur-md bg-white/10 dark:bg-white/5 border border-white/15 text-slate-300 hover:bg-white/20 transition-all cursor-pointer whitespace-nowrap'
             }
           >
@@ -62,7 +62,7 @@ export const FilterBar: React.FC<{
               onClick={() => onFilterChange({ selectedDecade: decade.value })}
               className={`px-3 py-1.5 rounded-full transition-all cursor-pointer border ${
                 filterState.selectedDecade === decade.value
-                  ? 'border-[#E50914] bg-[#E50914] text-white font-bold'
+                  ? 'bg-white/20 dark:bg-white/15 border-white/20 shadow-[inset_1px_1px_1px_rgba(255,255,255,0.4),0_2px_8px_rgba(0,0,0,0.2)] text-white font-bold backdrop-blur-md'
                   : 'border-transparent hover:border-white/30 hover:text-white'
               }`}
             >

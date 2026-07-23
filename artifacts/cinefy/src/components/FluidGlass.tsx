@@ -19,6 +19,13 @@ export interface FluidGlassProps {
   cubeProps?: Record<string, any>;
   style?: React.CSSProperties;
   className?: string;
+  scale?: number;
+  ior?: number;
+  thickness?: number;
+  transmission?: number;
+  roughness?: number;
+  chromaticAberration?: number;
+  anisotropy?: number;
 }
 
 function GlassLens({
@@ -49,7 +56,9 @@ function GlassLens({
     ior = 1.25,
     thickness = 1.2,
     roughness = 0.05,
-    transmission = 0.98
+    transmission = 0.98,
+    chromaticAberration = 0.05,
+    anisotropy = 0.01
   } = modeProps;
 
   return (
@@ -65,6 +74,8 @@ function GlassLens({
         roughness={roughness}
         ior={ior}
         thickness={thickness}
+        anisotropy={anisotropy}
+        dispersion={chromaticAberration}
         specularColor={new THREE.Color('#ffffff')}
         specularIntensity={1}
         clearcoat={1}
@@ -83,9 +94,26 @@ export default function FluidGlass({
   barProps = {},
   cubeProps = {},
   style = {},
-  className = ''
+  className = '',
+  scale,
+  ior,
+  thickness,
+  transmission,
+  roughness,
+  chromaticAberration,
+  anisotropy
 }: FluidGlassProps) {
-  const rawOverrides = mode === 'bar' ? barProps : mode === 'cube' ? cubeProps : lensProps;
+  const baseOverrides = mode === 'bar' ? barProps : mode === 'cube' ? cubeProps : lensProps;
+  const rawOverrides = {
+    ...baseOverrides,
+    ...(scale !== undefined && { scale }),
+    ...(ior !== undefined && { ior }),
+    ...(thickness !== undefined && { thickness }),
+    ...(transmission !== undefined && { transmission }),
+    ...(roughness !== undefined && { roughness }),
+    ...(chromaticAberration !== undefined && { chromaticAberration }),
+    ...(anisotropy !== undefined && { anisotropy })
+  };
   const shape = mode === 'bar' ? 'cylinder' : mode === 'cube' ? 'box' : 'sphere';
 
   return (

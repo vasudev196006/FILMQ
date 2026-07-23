@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
-import { fetchSearch, fetchGenres, fetchTrending, TMDBMovie, IMAGE_BASE } from '@/lib/tmdb';
+import { fetchSearch, fetchGenres, fetchTrending, fetchDiscover, TMDBMovie, IMAGE_BASE } from '@/lib/tmdb';
 import { MovieCard } from '@/components/MovieCard';
 import { FilterBar, FilterState } from '@/components/FilterBar';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
@@ -10,7 +10,7 @@ import { Search, Film } from 'lucide-react';
 import GlassSurface from '@/components/GlassSurface';
 
 export const SearchPage: React.FC = () => {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [filterState, setFilterState] = useState<FilterState>({
@@ -19,6 +19,21 @@ export const SearchPage: React.FC = () => {
     selectedDecade: null,
     viewMode: 'grid',
   });
+
+  // Parse query parameters from URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const genreParam = params.get('genre');
+    const decadeParam = params.get('decade');
+    
+    if (genreParam || decadeParam) {
+      setFilterState(prev => ({
+        ...prev,
+        selectedGenre: genreParam || prev.selectedGenre,
+        selectedDecade: decadeParam || prev.selectedDecade,
+      }));
+    }
+  }, [location]);
 
   // Debounce search
   useEffect(() => {
@@ -31,11 +46,24 @@ export const SearchPage: React.FC = () => {
     queryFn: fetchGenres 
   });
 
+  const isDefaultTrending = !debouncedQuery && !filterState.selectedGenre && !filterState.selectedDecade && filterState.sortBy === 'trending';
+  const isDiscovering = !debouncedQuery && !isDefaultTrending;
+
   // If query is empty, we show trending (or popular) as a default discovery view
   const { data: trendingMovies = [], isLoading: isLoadingTrending } = useQuery({
     queryKey: ['trending'],
     queryFn: fetchTrending,
-    enabled: !debouncedQuery
+    enabled: isDefaultTrending
+  });
+
+  const { data: discoverMovies = [], isLoading: isLoadingDiscover } = useQuery({
+    queryKey: ['discover', filterState.selectedGenre, filterState.selectedDecade, filterState.sortBy],
+    queryFn: () => fetchDiscover({
+      genreId: filterState.selectedGenre,
+      decade: filterState.selectedDecade,
+      sortBy: filterState.sortBy
+    }),
+    enabled: isDiscovering
   });
 
   const { data: searchResults = [], isLoading: isLoadingSearch } = useQuery({
@@ -44,21 +72,32 @@ export const SearchPage: React.FC = () => {
     enabled: !!debouncedQuery
   });
 
-  const isLoading = debouncedQuery ? isLoadingSearch : isLoadingTrending;
-  let displayedMovies = debouncedQuery ? searchResults : trendingMovies;
+  const isLoading = debouncedQuery 
+    ? isLoadingSearch 
+    : isDefaultTrending 
+      ? isLoadingTrending 
+      : isLoadingDiscover;
 
-  // Apply filters locally (since we don't have a full backend, we filter the current result set)
-  if (filterState.selectedGenre) {
-    displayedMovies = displayedMovies.filter(m => m.genre_ids.includes(parseInt(filterState.selectedGenre)));
-  }
+  let displayedMovies = debouncedQuery 
+    ? searchResults 
+    : isDefaultTrending 
+      ? trendingMovies 
+      : discoverMovies;
 
-  if (filterState.selectedDecade) {
-    const decadeStart = parseInt(filterState.selectedDecade);
-    displayedMovies = displayedMovies.filter(m => {
-      if (!m.release_date) return false;
-      const year = parseInt(m.release_date.substring(0, 4));
-      return year >= decadeStart && year < decadeStart + 10;
-    });
+  // Apply filters locally only for search results (since the TMDB search API doesn't support them)
+  if (debouncedQuery) {
+    if (filterState.selectedGenre) {
+      displayedMovies = displayedMovies.filter(m => m.genre_ids.includes(parseInt(filterState.selectedGenre)));
+    }
+
+    if (filterState.selectedDecade) {
+      const decadeStart = parseInt(filterState.selectedDecade);
+      displayedMovies = displayedMovies.filter(m => {
+        if (!m.release_date) return false;
+        const year = parseInt(m.release_date.substring(0, 4));
+        return year >= decadeStart && year < decadeStart + 10;
+      });
+    }
   }
 
   return (

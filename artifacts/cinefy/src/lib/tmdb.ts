@@ -79,7 +79,47 @@ export async function fetchMoviesByGenre(genreId: string): Promise<TMDBMovie[]> 
   return data.results || [];
 }
 
+export async function fetchDiscover(params: {
+  genreId?: string;
+  decade?: string | null;
+  sortBy?: string;
+}): Promise<TMDBMovie[]> {
+  const queryParams: Record<string, string> = {};
+  
+  if (params.genreId) {
+    queryParams['with_genres'] = params.genreId;
+  }
+  
+  if (params.decade) {
+    const decadeStart = parseInt(params.decade);
+    queryParams['primary_release_date.gte'] = `${decadeStart}-01-01`;
+    queryParams['primary_release_date.lte'] = `${decadeStart + 9}-12-31`;
+  }
+  
+  if (params.sortBy) {
+    let sortVal = 'popularity.desc';
+    if (params.sortBy === 'top_rated') {
+      sortVal = 'vote_average.desc';
+      queryParams['vote_count.gte'] = '100'; // Avoid high ratings with few votes
+    } else if (params.sortBy === 'recent') {
+      sortVal = 'primary_release_date.desc';
+      queryParams['primary_release_date.lte'] = '2026-07-23';
+    } else if (params.sortBy === 'release_year') {
+      sortVal = 'primary_release_date.desc';
+    }
+    queryParams['sort_by'] = sortVal;
+  }
+  
+  const data = await fetchTMDB('/discover/movie', queryParams);
+  return data.results || [];
+}
+
 export async function fetchGenres(): Promise<{ id: number; name: string }[]> {
   const data = await fetchTMDB('/genre/movie/list');
   return data.genres || [];
+}
+
+export async function fetchUpcoming(): Promise<TMDBMovie[]> {
+  const data = await fetchTMDB('/movie/upcoming');
+  return data.results || [];
 }
