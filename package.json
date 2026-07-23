@@ -6,7 +6,8 @@
     "preinstall": "node -e \"if (!/pnpm/.test(process.env.npm_config_user_agent || '')) { console.error('Use pnpm instead'); process.exit(1); }\"",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "deploy": "pnpm run typecheck:libs && pnpm --filter @workspace/cinefy run build && pnpm --filter @workspace/api-server run build"
   },
   "private": true,
   "devDependencies": {
