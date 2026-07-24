@@ -20,5 +20,4 @@
 - **Rich Home Page Layout**: Added "Sci-Fi & Fantasy Hits", "Action Blockbusters", "Upcoming Releases", and "Comedy Hits" horizontal scroll rows (configured to show exactly 4 full cards on desktop, 3 on tablet, and 2 on mobile), alongside a beautiful interactive "Browse by Genre" card grid.
 - **Navbar & Highlights**: Created the new `Highlight.tsx` tab highlights component and styled the navigation bar hover indicators to match the FilterBar layout toggle's premium glassmorphism design.
 - **Search Filters**: Replaced red active background states with the premium layout segment glassmorphism capsule on active genre selectors, decade pills, and selectors, while leaving `#1 Trending` red.
-
-
+- **Mobile Navigation Indicator**: Restyled the mobile active navigation pill background to match the desktop's premium glassmorphism capsule style (removing the solid dark `bg-black/60` background).
