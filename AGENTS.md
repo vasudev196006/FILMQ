@@ -16,3 +16,4 @@ At the start of **every session**, you MUST read the following core brain docume
 - **Status Soft Cap**: Keep `STATUS.md` under 80 lines. Overwrite old progress as features reach stability in `MAP.md`.
 - **Handoff**: Before concluding a session or switching context, update `HANDOFF.md` with active focus and next immediate steps.
 - **Security**: Never hardcode API keys or secrets in frontend source code. Always reference environment variables (e.g. `VITE_TMDB_API_KEY`).
+- **Stability**: Do not change anything UI related, DB related, or API related anymore. The project is as perfect as it is.
