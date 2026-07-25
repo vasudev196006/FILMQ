@@ -8,6 +8,7 @@ import { useMovieActions } from '@/hooks/useMovieActions';
 import { getReviewsForMovie, addReview, deleteReview, updateReview, Review } from '@/lib/storage';
 import { Play, Heart, BookmarkPlus, BookmarkCheck, ChevronLeft, Send, Check } from 'lucide-react';
 import { Link } from 'wouter';
+import { toast } from '@/hooks/use-toast';
 
 export const MovieDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -78,6 +79,11 @@ export const MovieDetailPage: React.FC = () => {
       const updated = await getReviewsForMovie(movie.id);
       setReviews(updated);
       
+      toast({
+        title: "Review Published",
+        description: "Your review was successfully saved!"
+      });
+
       // Reset form
       setReviewName('');
       setReviewRating(0);
@@ -85,6 +91,11 @@ export const MovieDetailPage: React.FC = () => {
       setReviewIsSpoiler(false);
     } catch (err) {
       console.error(err);
+      toast({
+        title: "Failed to Publish Review",
+        description: err instanceof Error ? err.message : String(err),
+        variant: "destructive"
+      });
     }
   };
 
