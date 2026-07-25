@@ -154,7 +154,7 @@ export const MovieDetailPage: React.FC = () => {
             className="w-full h-full object-cover opacity-30 filter blur-sm scale-105"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-app/50 via-app/80 to-app"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-app/50 via-app/80 to-app pointer-events-none"></div>
       </div>
 
       <div className="container mx-auto px-4 md:px-8 pt-24 relative z-10">
