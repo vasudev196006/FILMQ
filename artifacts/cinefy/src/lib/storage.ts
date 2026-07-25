@@ -74,19 +74,35 @@ export async function deleteReview(id: string): Promise<void> {
 
 // --- FAVORITES ---
 
+let favoritesCache: Favorite[] | null = null;
+let favoritesPromise: Promise<Favorite[]> | null = null;
+
 export async function getFavorites(): Promise<Favorite[]> {
-  const res = await fetch('/api/favorites', { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to fetch favorites');
-  const data = await res.json();
-  return data.map((fav: any) => ({
-    movieId: fav.movieId,
-    movieTitle: fav.movieTitle,
-    posterPath: fav.posterPath,
-    addedAt: fav.createdAt || fav.addedAt,
-    releaseDate: fav.releaseDate,
-    voteAverage: fav.voteAverage,
-    genres: fav.genres,
-  }));
+  if (favoritesCache) return favoritesCache;
+  if (favoritesPromise) return favoritesPromise;
+
+  favoritesPromise = (async () => {
+    try {
+      const res = await fetch('/api/favorites', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to fetch favorites');
+      const data = await res.json();
+      const mapped: Favorite[] = data.map((fav: any) => ({
+        movieId: fav.movieId,
+        movieTitle: fav.movieTitle,
+        posterPath: fav.posterPath,
+        addedAt: fav.createdAt || fav.addedAt,
+        releaseDate: fav.releaseDate,
+        voteAverage: fav.voteAverage,
+        genres: fav.genres,
+      }));
+      favoritesCache = mapped;
+      return mapped;
+    } finally {
+      favoritesPromise = null;
+    }
+  })();
+
+  return favoritesPromise;
 }
 
 export async function addFavorite(favorite: Favorite): Promise<void> {
@@ -96,6 +112,7 @@ export async function addFavorite(favorite: Favorite): Promise<void> {
     body: JSON.stringify(favorite),
   });
   if (!res.ok) throw new Error('Failed to add favorite');
+  favoritesCache = null; // Invalidate cache
 }
 
 export async function removeFavorite(movieId: number): Promise<void> {
@@ -103,6 +120,7 @@ export async function removeFavorite(movieId: number): Promise<void> {
     method: 'DELETE',
   });
   if (!res.ok) throw new Error('Failed to remove favorite');
+  favoritesCache = null; // Invalidate cache
 }
 
 export async function isFavorite(movieId: number): Promise<boolean> {
