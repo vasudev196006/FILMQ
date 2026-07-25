@@ -19,7 +19,13 @@ export const MovieDetailPage: React.FC = () => {
 
   const { favorite, watchlisted, toggleFavorite, toggleWatchlist } = useMovieActions(
     Number(id), 
-    movie ? { title: movie.title, posterPath: movie.poster_path || '' } : undefined
+    movie ? { 
+      title: movie.title, 
+      posterPath: movie.poster_path || '',
+      releaseDate: movie.release_date || '',
+      voteAverage: movie.vote_average || 0,
+      genres: movie.genres?.map(g => g.name) || []
+    } : undefined
   );
 
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -46,8 +52,15 @@ export const MovieDetailPage: React.FC = () => {
     e.preventDefault();
     if (!movie || !reviewName.trim() || reviewRating === 0) return;
 
+    const generateId = () => {
+      if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    };
+
     const newReview: Review = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       movieId: movie.id,
       movieTitle: movie.title,
       moviePosterPath: movie.poster_path || '',

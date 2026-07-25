@@ -3,7 +3,7 @@ import { getFavorites, Favorite } from '@/lib/storage';
 import { MovieCard } from '@/components/MovieCard';
 import { EmptyState } from '@/components/EmptyState';
 import { Heart } from 'lucide-react';
-import { IMAGE_BASE } from '@/lib/tmdb';
+import { IMAGE_BASE, fetchMovieDetails } from '@/lib/tmdb';
 
 export const FavoritesPage: React.FC = () => {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
@@ -11,7 +11,31 @@ export const FavoritesPage: React.FC = () => {
   const loadFavorites = async () => {
     try {
       const favs = await getFavorites();
-      setFavorites(favs.reverse()); // newest first usually
+      const reversed = favs.reverse(); // newest first
+      setFavorites(reversed);
+
+      // Fetch missing metadata dynamically in the browser for legacy favorites
+      const updatedFavs = await Promise.all(
+        reversed.map(async (fav) => {
+          if (!fav.releaseDate || fav.voteAverage === '0' || fav.voteAverage === '0.0') {
+            try {
+              const details = await fetchMovieDetails(fav.movieId.toString());
+              if (details) {
+                return {
+                  ...fav,
+                  releaseDate: details.release_date || '',
+                  voteAverage: details.vote_average !== undefined ? String(details.vote_average) : '0',
+                  genres: details.genres ? details.genres.map((g: any) => g.name).join(',') : ''
+                };
+              }
+            } catch (err) {
+              console.error(`Failed to fetch details for movie ${fav.movieId}:`, err);
+            }
+          }
+          return fav;
+        })
+      );
+      setFavorites(updatedFavs);
     } catch (e) {
       console.error(e);
     }
@@ -42,9 +66,9 @@ export const FavoritesPage: React.FC = () => {
                 movie={{
                   id: favorite.movieId.toString(),
                   title: favorite.movieTitle,
-                  year: 0, // Not stored in short favorite model, could fetch details if needed
-                  rating: 0,
-                  genre: [],
+                  year: favorite.releaseDate ? parseInt(favorite.releaseDate.substring(0, 4)) || 0 : 0,
+                  rating: favorite.voteAverage ? parseFloat(favorite.voteAverage) || 0 : 0,
+                  genre: favorite.genres ? favorite.genres.split(',').filter(Boolean) : [],
                   poster: favorite.posterPath ? `${IMAGE_BASE}w500${favorite.posterPath}` : '',
                   href: `/movie/${favorite.movieId}`
                 }}

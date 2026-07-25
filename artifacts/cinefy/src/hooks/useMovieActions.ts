@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 import { isFavorite, addFavorite, removeFavorite, isWatchlisted, addToWatchlist, removeFromWatchlist, subscribeToStorage } from '@/lib/storage';
 
-export function useMovieActions(movieId: number, movieDetails?: { title: string, posterPath: string }) {
+export function useMovieActions(
+  movieId: number, 
+  movieDetails?: { 
+    title: string; 
+    posterPath: string;
+    releaseDate?: string;
+    voteAverage?: number;
+    genres?: string[];
+  }
+) {
   const [favorite, setFavorite] = useState(false);
   const [watchlisted, setWatchlisted] = useState(() => isWatchlisted(movieId));
 
@@ -36,7 +45,10 @@ export function useMovieActions(movieId: number, movieDetails?: { title: string,
         movieId,
         movieTitle: movieDetails.title,
         posterPath: movieDetails.posterPath,
-        addedAt: new Date().toISOString()
+        addedAt: new Date().toISOString(),
+        releaseDate: movieDetails.releaseDate || '',
+        voteAverage: movieDetails.voteAverage !== undefined ? String(movieDetails.voteAverage) : '0',
+        genres: movieDetails.genres ? movieDetails.genres.join(',') : ''
       });
       setFavorite(true);
     }

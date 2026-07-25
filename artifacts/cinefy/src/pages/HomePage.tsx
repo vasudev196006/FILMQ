@@ -82,22 +82,33 @@ export const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-app pb-20">
       {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[600px] flex items-end pb-20 pt-32">
+      <section className="relative min-h-[460px] md:h-[80vh] md:min-h-[600px] flex items-end pb-12 md:pb-20 pt-28 md:pt-32">
         {heroMovie && (
           <>
-            <div className="absolute inset-0 z-0">
+            {/* Blurred Atmospheric Background Backdrop */}
+            <div className="absolute inset-0 z-0 overflow-hidden">
               <img 
                 src={`${IMAGE_BASE}original${heroMovie.backdrop_path || heroMovie.poster_path}`} 
                 alt={heroMovie.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover filter blur-lg opacity-25 scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent"></div>
             </div>
 
-            <div className="container mx-auto px-4 md:px-8 relative z-10 w-full">
-              <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                <div className="flex items-center gap-3 mb-4">
+            <div className="container mx-auto px-4 md:px-8 relative z-10 w-full flex flex-col md:flex-row gap-6 items-center md:items-end">
+              {/* Scaled-down Movie Poster Card */}
+              <div className="w-28 sm:w-36 md:w-48 shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/15 aspect-[2/3] bg-slate-900">
+                <img 
+                  src={`${IMAGE_BASE}w500${heroMovie.poster_path}`} 
+                  alt={heroMovie.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Movie Details */}
+              <div className="flex-1 max-w-2xl text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
                   <div className="px-3.5 py-1 flex items-center gap-1.5 text-xs font-bold text-white bg-primary rounded-full uppercase tracking-wider shadow-md">
                     #1 Trending
                   </div>
@@ -107,15 +118,15 @@ export const HomePage: React.FC = () => {
                   </div>
                 </div>
                 
-                <h1 className="text-5xl md:text-7xl font-serif text-foreground mb-4 leading-tight drop-shadow-lg">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-foreground mb-3 md:mb-4 leading-tight drop-shadow-lg">
                   {heroMovie.title}
                 </h1>
                 
-                <p className="text-lg text-foreground/80 mb-8 line-clamp-3 leading-relaxed max-w-xl">
+                <p className="text-sm sm:text-base md:text-lg text-foreground/80 mb-6 md:mb-8 line-clamp-3 leading-relaxed max-w-xl mx-auto md:mx-0">
                   {heroMovie.overview}
                 </p>
                 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center md:justify-start gap-4">
                   <Link href={`/movie/${heroMovie.id}`} className="cursor-pointer">
                     <div className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 flex items-center gap-2 bg-primary hover:opacity-90 shadow-lg">
                       <Play className="size-4 relative z-10 fill-white" />

@@ -21,7 +21,10 @@ export const MovieCard: React.FC<{
 }> = ({ movie, onQuickRate }) => {
   const { favorite, watchlisted, toggleFavorite, toggleWatchlist } = useMovieActions(Number(movie.id), {
     title: movie.title,
-    posterPath: movie.poster.replace(IMAGE_BASE + 'w500', '') // basic strip
+    posterPath: movie.poster.replace(IMAGE_BASE + 'w500', ''), // basic strip
+    releaseDate: movie.year ? `${movie.year}-01-01` : '',
+    voteAverage: movie.rating || 0,
+    genres: movie.genre || []
   });
 
   const [isHoveringRate, setIsHoveringRate] = useState(false);
@@ -67,6 +70,9 @@ export const MovieCard: React.FC<{
               e.stopPropagation();
               toggleWatchlist();
             }}
+            onTouchStart={(e) => {
+              e.stopPropagation();
+            }}
             className={`size-9 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-xl transition-all duration-300 ${
               watchlisted
                 ? 'bg-primary text-white shadow-md border border-primary/50 scale-110'
@@ -83,6 +89,9 @@ export const MovieCard: React.FC<{
               e.preventDefault();
               e.stopPropagation();
               toggleFavorite();
+            }}
+            onTouchStart={(e) => {
+              e.stopPropagation();
             }}
             className={`size-9 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-xl transition-all duration-300 ${
               favorite

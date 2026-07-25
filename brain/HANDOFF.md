@@ -14,14 +14,20 @@
 
 ## Active Focus
 
-- Resolving visual inconsistencies between the desktop hover glassmorphism capsule and the mobile active tab indicator in the navigation bar.
+- All features and local bug fixes verified compile-clean and deployed.
 
 ## What was accomplished
 
-1. Identified that the mobile navigation bar active indicator pill in [Navbar.tsx](file:///c:/projects/filmq/FILMQ/artifacts/cinefy/src/components/Navbar.tsx) was styled with a dark/black background (`bg-black/60` and `border-white/10`) instead of matching the desktop's premium glassmorphic pill background.
-2. Updated [Navbar.tsx](file:///c:/projects/filmq/FILMQ/artifacts/cinefy/src/components/Navbar.tsx) to style the mobile active pill (`layoutId="fluid-glass-mobile-pill"`) with the exact same glassmorphism design tokens (`bg-white/20 dark:bg-white/15 border-white/20 shadow-[inset_1px_1px_1px_rgba(255,255,255,0.4),0_2px_8px_rgba(0,0,0,0.2)] backdrop-blur-md`) as the desktop one.
-3. Verified workspace compilation (`pnpm run typecheck`) and successfully compiled production builds using the `pnpm run deploy` script.
+1. Replaced the top-aligned horizontal scroll navigation bar on mobile with a sticky bottom floating glass tab bar. Integrated Lucide icons and stacked typography, and animated the active state with a glassmorphism spring capsule.
+2. Made `@workspace/api-server` dev script cross-platform (removed Unix `export` commands) to support Windows local launches.
+3. Added self-contained `.env` directory-traversal loaders inside the database connections to natively resolve credentials.
+4. Resolved favorites real-time loading delays by setting `{ cache: 'no-store' }` on API calls to bypass browser conditional caches.
+5. Expanded `favorites` table schema and frontend state models to store and render correct metadata (year, rating, and genres) on favorites cards.
+6. Implemented a client-side TMDB fallback in `FavoritesPage.tsx` to automatically resolve metadata for legacy favorites.
+7. Redesigned the home page hero section on mobile viewports to display a small portrait poster next to text details and a blurred backdrop, avoiding landscape backdrop cropping.
+8. Resolved review submission crashes in non-secure HTTP mobile contexts by adding a fallback for `crypto.randomUUID()`.
+9. Added `onTouchStart` propagation handlers to movie cards' overlay quick buttons to prevent touch navigation conflicts.
 
 ## Next Immediate Action
 
-All pages (Home, Search, My Reviews, Favorites) now render the consistent glassmorphic active capsule component in the mobile navigation bar. No further immediate actions are required.
+The updated codebase is fully live, verified, built, and pushed to both the main repository and the new remote `mob` at [github.com/vasudev196006/filmqmob](https://github.com/vasudev196006/filmqmob). No further immediate actions are required.

@@ -17,6 +17,9 @@ export interface Favorite {
   movieTitle: string;
   posterPath: string;
   addedAt: string;
+  releaseDate?: string;
+  voteAverage?: string;
+  genres?: string;
 }
 
 export interface WatchlistItem {
@@ -33,13 +36,13 @@ const STORAGE_KEYS = {
 // --- REVIEWS ---
 
 export async function getReviews(): Promise<Review[]> {
-  const res = await fetch('/api/reviews');
+  const res = await fetch('/api/reviews', { cache: 'no-store' });
   if (!res.ok) throw new Error('Failed to fetch reviews');
   return res.json();
 }
 
 export async function getReviewsForMovie(movieId: number): Promise<Review[]> {
-  const res = await fetch(`/api/reviews/${movieId}`);
+  const res = await fetch(`/api/reviews/${movieId}`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Failed to fetch reviews for movie');
   return res.json();
 }
@@ -72,7 +75,7 @@ export async function deleteReview(id: string): Promise<void> {
 // --- FAVORITES ---
 
 export async function getFavorites(): Promise<Favorite[]> {
-  const res = await fetch('/api/favorites');
+  const res = await fetch('/api/favorites', { cache: 'no-store' });
   if (!res.ok) throw new Error('Failed to fetch favorites');
   const data = await res.json();
   return data.map((fav: any) => ({
@@ -80,6 +83,9 @@ export async function getFavorites(): Promise<Favorite[]> {
     movieTitle: fav.movieTitle,
     posterPath: fav.posterPath,
     addedAt: fav.createdAt || fav.addedAt,
+    releaseDate: fav.releaseDate,
+    voteAverage: fav.voteAverage,
+    genres: fav.genres,
   }));
 }
 

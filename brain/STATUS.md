@@ -21,3 +21,11 @@
 - **Navbar & Highlights**: Created the new `Highlight.tsx` tab highlights component and styled the navigation bar hover indicators to match the FilterBar layout toggle's premium glassmorphism design.
 - **Search Filters**: Replaced red active background states with the premium layout segment glassmorphism capsule on active genre selectors, decade pills, and selectors, while leaving `#1 Trending` red.
 - **Mobile Navigation Indicator**: Restyled the mobile active navigation pill background to match the desktop's premium glassmorphism capsule style (removing the solid dark `bg-black/60` background).
+- **Cross-Platform Server Script**: Removed Unix-only `export` commands from `@workspace/api-server` package scripts to enable server startup on Windows.
+- **Embedded .env Loader**: Added self-contained `.env` parsing inside the database package (`lib/db/src/index.ts` and `drizzle.config.ts`) to ensure `DATABASE_URL` is resolved natively in all execution environments.
+- **Favorites Caching Fix**: Configured storage fetch operations to use `cache: 'no-store'` to bypass browser GET caches, enabling instantaneous real-time additions and deletions.
+- **Favorites Metadata Mapping**: Added `releaseDate`, `voteAverage`, and `genres` columns to the database `favorites` table schema, and populated them dynamically.
+- **Legacy Favorites Fallback**: Implemented automatic client-side fallback querying to TMDB for old favorites that lacked metadata.
+- **Mobile Hero Section Layout**: Redesigned the homepage hero section to display a dedicated portrait poster card next to text details and a blurred backdrop, preventing image cropping on portrait screens.
+- **Secure Context Fallback**: Provided a browser-safe fallback for `crypto.randomUUID()` in the reviews form to prevent crashes in non-secure HTTP contexts.
+- **Touch Event Bubble Fix**: Added touch propagation intercepts to movie cards' quick-action buttons to prevent accidental card navigation when toggling favorites/watchlist on mobile.

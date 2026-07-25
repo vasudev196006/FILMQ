@@ -22,6 +22,9 @@ export const favoritesTable = pgTable("favorites", {
   movieId: integer("movie_id").notNull(),
   movieTitle: text("movie_title").notNull(),
   posterPath: text("poster_path").notNull(),
+  releaseDate: text("release_date").default("").notNull(),
+  voteAverage: text("vote_average").default("0").notNull(),
+  genres: text("genres").default("").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

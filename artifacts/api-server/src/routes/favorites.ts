@@ -17,7 +17,7 @@ router.get("/favorites", async (req, res, next) => {
 // POST /api/favorites - Add a favorite
 router.post("/favorites", async (req, res, next) => {
   try {
-    const { movieId, movieTitle, posterPath } = req.body;
+    const { movieId, movieTitle, posterPath, releaseDate, voteAverage, genres } = req.body;
 
     if (!movieId || !movieTitle || !posterPath) {
       res.status(400).json({ error: "Missing required fields" });
@@ -45,6 +45,9 @@ router.post("/favorites", async (req, res, next) => {
       movieId: numericMovieId,
       movieTitle,
       posterPath,
+      releaseDate: releaseDate || "",
+      voteAverage: voteAverage !== undefined ? String(voteAverage) : "0",
+      genres: Array.isArray(genres) ? genres.join(",") : (genres || ""),
     }).returning();
 
     res.status(201).json(newFavorite);
