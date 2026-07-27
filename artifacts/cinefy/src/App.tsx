@@ -12,6 +12,7 @@ import { SearchPage } from '@/pages/SearchPage';
 import { MovieDetailPage } from '@/pages/MovieDetailPage';
 import { ReviewsPage } from '@/pages/ReviewsPage';
 import { FavoritesPage } from '@/pages/FavoritesPage';
+import { ForYouPage } from '@/pages/ForYouPage';
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/" component={HomePage} />
         <Route path="/movie/:id" component={MovieDetailPage} />
         <Route path="/search" component={SearchPage} />
+        <Route path="/for-you" component={ForYouPage} />
         <Route path="/reviews" component={ReviewsPage} />
         <Route path="/favorites" component={FavoritesPage} />
         <Route component={NotFound} />

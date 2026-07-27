@@ -5,29 +5,26 @@
 
 ---
 
-# HANDOFF — Session Bridge
-
-> **What this file answers**: "What was the previous session working on? What is still in head before context dies?"
-> **Who reads this**: Read on session start if present.
-
----
-
 ## Active Focus
 
-- All features and local bug fixes verified compile-clean and deployed.
+- Recommendation engine feature fully implemented, typechecked, and built. Not yet deployed or manually tested end-to-end.
 
 ## What was accomplished
 
-1. Replaced the top-aligned horizontal scroll navigation bar on mobile with a sticky bottom floating glass tab bar. Integrated Lucide icons and stacked typography, and animated the active state with a glassmorphism spring capsule.
-2. Made `@workspace/api-server` dev script cross-platform (removed Unix `export` commands) to support Windows local launches.
-3. Added self-contained `.env` directory-traversal loaders inside the database connections to natively resolve credentials.
-4. Resolved favorites real-time loading delays by setting `{ cache: 'no-store' }` on API calls to bypass browser conditional caches.
-5. Expanded `favorites` table schema and frontend state models to store and render correct metadata (year, rating, and genres) on favorites cards.
-6. Implemented a client-side TMDB fallback in `FavoritesPage.tsx` to automatically resolve metadata for legacy favorites.
-7. Redesigned the home page hero section on mobile viewports to display a small portrait poster next to text details and a blurred backdrop, avoiding landscape backdrop cropping.
-8. Resolved review submission crashes in non-secure HTTP mobile contexts by adding a fallback for `crypto.randomUUID()`.
-9. Added `onTouchStart` propagation handlers to movie cards' overlay quick buttons to prevent touch navigation conflicts.
+1. Created a server-side TMDB API client (`artifacts/api-server/src/lib/tmdb-server.ts`) that reads the API key from `process.env` and provides typed functions for movie recommendations, discover (movie + TV), and genre list endpoints.
+2. Built the recommendation algorithm (`artifacts/api-server/src/routes/recommendations.ts`) — `GET /api/recommendations` that:
+   - Reads all reviews and favorites from the database
+   - Builds a weighted genre affinity profile (favorites = +2/genre, high ratings = +rating/10, low ratings = -1)
+   - Fetches TMDB movie recommendations for top-5 favorites + genre-based movie/TV discovery for top-3 genres
+   - Deduplicates, excludes already-seen movies, scores by affinity × popularity, caches for 5 minutes
+3. Created the `ForYouPage.tsx` at route `/for-you` with: hero banner with genre pills, recommended movies carousel, TV shows carousel, taste profile bar chart, and empty state.
+4. Created `TVShowCard.tsx` component with "TV" badge, TiltedCard effect, and external TMDB links.
+5. Added `TMDBTVShow` interface to `tmdb.ts`.
+6. Added "For You" nav tab with Sparkles icon to both desktop and mobile Navbar.
+7. Fixed mobile nav bar width from `w-1/4` to `w-1/5` to accommodate 5 tabs.
 
 ## Next Immediate Action
 
-The updated codebase is fully live, verified, built, and pushed to both the main repository and the new remote `mob` at [github.com/vasudev196006/filmqmob](https://github.com/vasudev196006/filmqmob). No further immediate actions are required.
+- Start both servers and manually test the `/for-you` page with existing favorites/reviews data.
+- Git add, commit, and push the recommendation engine changes.
+- Record an ADR for the recommendation engine architecture decision.

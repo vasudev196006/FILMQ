@@ -52,3 +52,22 @@
   - *Pure Pitch-Black Obsidian*: Rejected (too flat, lacking modern cinematic depth).
   - *Amber / Orange Accents*: Rejected (distracting to user focus).
 - **Consequences**: Provides an eye-soothing, high-contrast, iconic movie platform theme that is locked across session state and Project Brain.
+
+---
+
+## [ADR-005] Server-Side Weighted Genre Affinity Recommendation Engine
+
+- **Date**: 2026-07-27
+- **Status**: Accepted
+- **Context**: The user requested a personalized recommendation system that suggests movies and TV shows based on their review history and favorites. The system must work without user authentication (shared global data) and leverage the existing TMDB API.
+- **Decision**: Implemented a server-side recommendation engine at `GET /api/recommendations` that:
+  1. Reads all reviews and favorites from the PostgreSQL database
+  2. Builds a weighted genre affinity profile (favorites = +2/genre, reviews ≥ 7 = +rating/10, reviews < 5 = -1)
+  3. Fetches TMDB recommendations for top-5 favorites + genre-based discover (movies + TV) for top-3 genres
+  4. Deduplicates, excludes already-seen, scores by affinity × popularity, and returns top 20 movies + 10 TV shows
+  5. Caches results in-memory for 5 minutes to avoid hammering TMDB
+- **Rejected Alternatives**:
+  - *Client-side-only recommendations*: Rejected because making 10+ parallel TMDB requests from the browser would be slow, expose rate limits, and require exposing the API key to more endpoints.
+  - *Machine learning / collaborative filtering*: Rejected as overkill for a single-tenant app with no user accounts — weighted heuristics are sufficient and transparent.
+  - *Storing genre IDs in the reviews table*: Rejected to avoid a DB migration; instead, genre resolution is done on-the-fly via TMDB API calls with caching.
+- **Consequences**: Recommendations improve organically as users add more reviews and favorites. Server-side caching keeps TMDB API usage minimal. No database schema changes required.

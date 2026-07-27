@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import { Home, Search, MessageSquare, Heart } from 'lucide-react';
+import { Home, Search, MessageSquare, Heart, Sparkles } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const [location] = useLocation();
@@ -9,6 +9,7 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
+    { href: '/for-you', label: 'For You', icon: Sparkles },
     { href: '/search', label: 'Search', icon: Search },
     { href: '/reviews', label: 'Reviews', icon: MessageSquare },
     { href: '/favorites', label: 'Favorites', icon: Heart },
@@ -78,7 +79,7 @@ export const Navbar: React.FC = () => {
             const Icon = link.icon;
 
             return (
-              <Link key={link.href} href={link.href} className="cursor-pointer flex flex-col items-center justify-center relative py-1.5 px-3 w-1/4 select-none">
+              <Link key={link.href} href={link.href} className="cursor-pointer flex flex-col items-center justify-center relative py-1.5 px-2 w-1/5 select-none">
                 {active && (
                   <motion.div
                     layoutId="fluid-glass-mobile-pill"

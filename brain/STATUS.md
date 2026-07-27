@@ -7,7 +7,7 @@
 
 ## Current State
 
-- **Git Status**: Clean, committed, and pushed to `origin/main` (`2341b6f`).
+- **Git Status**: Local main at `7f1e81a` (ahead of `origin/main` by 1 commit), pushed to `filmqbackup/main`.
 - **Official Brand Title**: **FILMQ**
 - **Replit Cleaned**: Removed 100% of `@replit/*` plugins, dev packages, connectors, lockfile entries, and Replit prompt files from the repository.
 - **Theme Color**: Iconic **Netflix Crimson Red (`#E50914`)**, Obsidian Slate, and Crisp White.
@@ -29,3 +29,4 @@
 - **Mobile Hero Section Layout**: Redesigned the homepage hero section to display a dedicated portrait poster card next to text details and a blurred backdrop, preventing image cropping on portrait screens.
 - **Secure Context Fallback**: Provided a browser-safe fallback for `crypto.randomUUID()` in the reviews form to prevent crashes in non-secure HTTP contexts.
 - **Touch Event Bubble Fix**: Added touch propagation intercepts to movie cards' quick-action buttons to prevent accidental card navigation when toggling favorites/watchlist on mobile.
+- **Personalized Recommendation Engine**: Built a "For You" system (`GET /api/recommendations`) that analyzes reviews and favorites to build a weighted genre affinity profile, fetches TMDB movie recommendations + genre-based movie/TV discovery, deduplicates, scores, and returns top 20 movies + 10 TV shows with 5-minute server-side caching. New `/for-you` page with movie/TV carousels, taste profile bar chart, and empty state. Added "For You" nav tab with Sparkles icon.
