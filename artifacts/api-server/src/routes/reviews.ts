@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db, reviewsTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
+import { clearRecommendationCache } from "./recommendations";
 
 const router = Router();
 
@@ -55,6 +56,7 @@ router.post("/reviews", async (req, res, next) => {
       isSpoiler: !!isSpoiler,
     }).returning();
 
+    clearRecommendationCache();
     res.status(201).json(newReview);
   } catch (error) {
     next(error);
@@ -93,6 +95,7 @@ router.put("/reviews/:id", async (req, res, next) => {
       return;
     }
 
+    clearRecommendationCache();
     res.json(updatedReview);
   } catch (error) {
     next(error);
@@ -113,6 +116,7 @@ router.delete("/reviews/:id", async (req, res, next) => {
       return;
     }
 
+    clearRecommendationCache();
     res.json({ success: true, message: "Review deleted successfully" });
   } catch (error) {
     next(error);

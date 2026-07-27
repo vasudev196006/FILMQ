@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db, favoritesTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
+import { clearRecommendationCache } from "./recommendations";
 
 const router = Router();
 
@@ -50,6 +51,7 @@ router.post("/favorites", async (req, res, next) => {
       genres: Array.isArray(genres) ? genres.join(",") : (genres || ""),
     }).returning();
 
+    clearRecommendationCache();
     res.status(201).json(newFavorite);
   } catch (error) {
     next(error);
@@ -75,6 +77,7 @@ router.delete("/favorites/:movieId", async (req, res, next) => {
       return;
     }
 
+    clearRecommendationCache();
     res.json({ success: true, message: "Favorite removed successfully" });
   } catch (error) {
     next(error);
