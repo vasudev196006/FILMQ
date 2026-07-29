@@ -138,6 +138,7 @@ export const Navbar: React.FC = () => {
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-md pointer-events-auto">
         <div 
           className="glass-panel bg-black/60 backdrop-blur-2xl border border-white/15 rounded-full p-2.5 shadow-2xl flex items-center justify-around select-none touch-none"
+          style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', userSelect: 'none', touchAction: 'none' }}
           onContextMenu={(e) => e.preventDefault()}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -153,6 +154,7 @@ export const Navbar: React.FC = () => {
                 key={link.href}
                 data-mobile-nav-href={link.href}
                 onClick={(e) => handleMobileItemClick(e, link.href)}
+                style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', userSelect: 'none', touchAction: 'none' }}
                 className="cursor-pointer flex flex-col items-center justify-center relative py-1.5 px-2 w-1/5 select-none touch-none"
               >
                 {active && (
