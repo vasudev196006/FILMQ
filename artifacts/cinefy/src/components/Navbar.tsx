@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
 import { Home, Search, MessageSquare, Heart, Sparkles } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [hoveredHref, setHoveredHref] = useState<string | null>(null);
+  const [mobileTouchHref, setMobileTouchHref] = useState<string | null>(null);
+
+  const isTouchActiveRef = useRef(false);
+  const justTouchHandledRef = useRef(false);
+  const currentHighlightedHrefRef = useRef<string | null>(null);
 
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
@@ -16,6 +21,64 @@ export const Navbar: React.FC = () => {
   ];
 
   const activeHref = hoveredHref ?? location;
+  const activeMobileHref = mobileTouchHref ?? location;
+
+  const updateMobileTouchTarget = (clientX: number, clientY: number) => {
+    const elem = document.elementFromPoint(clientX, clientY);
+    const navElem = elem?.closest('[data-mobile-nav-href]');
+    const targetHref = navElem?.getAttribute('data-mobile-nav-href') ?? null;
+    currentHighlightedHrefRef.current = targetHref;
+    setMobileTouchHref(targetHref);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length > 0) {
+      isTouchActiveRef.current = true;
+      const touch = e.touches[0];
+      updateMobileTouchTarget(touch.clientX, touch.clientY);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isTouchActiveRef.current && e.touches.length > 0) {
+      const touch = e.touches[0];
+      updateMobileTouchTarget(touch.clientX, touch.clientY);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (isTouchActiveRef.current) {
+      isTouchActiveRef.current = false;
+      justTouchHandledRef.current = true;
+      setTimeout(() => {
+        justTouchHandledRef.current = false;
+      }, 100);
+
+      const finalHref = currentHighlightedHrefRef.current;
+      setMobileTouchHref(null);
+      currentHighlightedHrefRef.current = null;
+
+      if (finalHref && finalHref !== location) {
+        setLocation(finalHref);
+      }
+    }
+  };
+
+  const handleTouchCancel = () => {
+    isTouchActiveRef.current = false;
+    currentHighlightedHrefRef.current = null;
+    setMobileTouchHref(null);
+  };
+
+  const handleMobileItemClick = (e: React.MouseEvent, href: string) => {
+    if (justTouchHandledRef.current) {
+      e.preventDefault();
+      return;
+    }
+    if (href !== location) {
+      setLocation(href);
+    }
+  };
 
   return (
     <>
@@ -73,13 +136,25 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Sticky Bottom Floating Glass Tab Bar */}
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-md pointer-events-auto">
-        <div className="glass-panel bg-black/60 backdrop-blur-2xl border border-white/15 rounded-full p-2.5 shadow-2xl flex items-center justify-around">
+        <div 
+          className="glass-panel bg-black/60 backdrop-blur-2xl border border-white/15 rounded-full p-2.5 shadow-2xl flex items-center justify-around select-none touch-none"
+          onContextMenu={(e) => e.preventDefault()}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchCancel}
+        >
           {navLinks.map(link => {
-            const active = location === link.href;
+            const active = activeMobileHref === link.href;
             const Icon = link.icon;
 
             return (
-              <Link key={link.href} href={link.href} className="cursor-pointer flex flex-col items-center justify-center relative py-1.5 px-2 w-1/5 select-none">
+              <div
+                key={link.href}
+                data-mobile-nav-href={link.href}
+                onClick={(e) => handleMobileItemClick(e, link.href)}
+                className="cursor-pointer flex flex-col items-center justify-center relative py-1.5 px-2 w-1/5 select-none touch-none"
+              >
                 {active && (
                   <motion.div
                     layoutId="fluid-glass-mobile-pill"
@@ -91,7 +166,7 @@ export const Navbar: React.FC = () => {
                 <span className={`text-[10px] font-semibold tracking-wide transition-colors duration-200 ${active ? 'text-white font-bold' : 'text-slate-400'}`}>
                   {link.label}
                 </span>
-              </Link>
+              </div>
             );
           })}
         </div>
@@ -99,3 +174,4 @@ export const Navbar: React.FC = () => {
     </>
   );
 };
+

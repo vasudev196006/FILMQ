@@ -70,4 +70,22 @@
   - *Client-side-only recommendations*: Rejected because making 10+ parallel TMDB requests from the browser would be slow, expose rate limits, and require exposing the API key to more endpoints.
   - *Machine learning / collaborative filtering*: Rejected as overkill for a single-tenant app with no user accounts — weighted heuristics are sufficient and transparent.
   - *Storing genre IDs in the reviews table*: Rejected to avoid a DB migration; instead, genre resolution is done on-the-fly via TMDB API calls with caching.
-- **Consequences**: Recommendations improve organically as users add more reviews and favorites. Server-side caching keeps TMDB API usage minimal. No database schema changes required.
+- **Consequences**: Recommendations improve organically as users add more reviews and favorites. Server-Side caching keeps TMDB API usage minimal. No database schema changes required.
+
+---
+
+## [ADR-006] Touch-Based Hover-Equivalent Interaction for Mobile Navigation
+
+- **Date**: 2026-07-29
+- **Status**: Accepted
+- **Context**: On mobile devices, native CSS `:hover` states do not behave fluidly and long-press interactions can trigger browser context menus. A touch-driven hover equivalent was required to replicate desktop hover indicator fluidity without modifying desktop behavior or mobile UI layout.
+- **Decision**: Implemented high-performance touch event tracking (`onTouchStart`, `onTouchMove`, `onTouchEnd`, `onTouchCancel`) on the mobile bottom navigation bar in `Navbar.tsx`:
+  1. `onTouchStart`: Immediately highlights target under user's finger using `document.elementFromPoint(clientX, clientY)`.
+  2. `onTouchMove`: Tracks sliding finger movement in real time to shift the glassmorphism active pill (`fluid-glass-mobile-pill`) across tabs with smooth Framer Motion spring physics (`stiffness: 450, damping: 35`).
+  3. `onTouchEnd`: Triggers navigation (`setLocation`) to the highlighted item upon release.
+  4. `onTouchCancel`: Resets touch state gracefully to prevent stuck hover states.
+- **Rejected Alternatives**:
+  - *CSS `:hover` media query selectors*: Rejected because mobile touch browsers retain sticky `:hover` states after touch release.
+  - *Long-press timer delay*: Rejected because long-press adds latency and triggers browser context menus on mobile devices.
+- **Consequences**: Provides 60 FPS, GPU-accelerated touch hover feedback on mobile touch devices while preserving desktop layout and desktop hover animation completely.
+
