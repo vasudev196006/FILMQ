@@ -7,23 +7,20 @@
 
 ## Active Focus
 
-- Mobile-only touch-driven hover interaction implemented, typechecked, and verified via build.
+- Liquid Glass navbar button redesign implemented, typechecked, and verified via build.
 
 ## What was accomplished
 
-1. Implemented mobile-only touch-based hover-equivalent interaction in `artifacts/cinefy/src/components/Navbar.tsx`:
-   - Instant touch activation on `pointerdown`/`touchstart` (no long-press required).
-   - Real-time finger tracking across navigation buttons (`onTouchMove`) using `document.elementFromPoint(x, y)` to dynamically update active item target.
-   - Smooth Framer Motion spring-animated indicator movement (`layoutId="fluid-glass-mobile-pill"` with `stiffness: 450, damping: 35`).
-   - Activation of highlighted tab upon finger release (`onTouchEnd`).
-   - Graceful state resetting on `onTouchCancel` or sliding finger off navigation container.
-   - Added `-webkit-touch-callout: none`, `touch-none`, `select-none`, and `onContextMenu={(e) => e.preventDefault()}` to prevent native context menus on touch holding.
-   - Zero changes to desktop layout, desktop hover, or desktop animations.
-2. Verified TypeScript types cleanly (`pnpm run typecheck`).
-3. Verified full production build (`pnpm run build`).
-4. Updated `brain/DECISIONS.md` with [ADR-006].
+1. Redesigned navigation bar buttons according to [liquid_buttons_details.md](file:///c:/projects/filmq/liquid_buttons_details.md) specification:
+   - Added `.glass-button` and `.glass-button-text` utilities in [index.css](file:///c:/projects/filmq/artifacts/cinefy/src/index.css) with physical interactive states (`translateY(-1px)` hover, `translateY(1px) scale(0.98)` active) and Apple typography (`-apple-system, BlinkMacSystemFont, "SF Pro Display"`, `letter-spacing: -0.01em`, `text-shadow: 0 1px 3px rgba(0,0,0,0.25)`).
+   - Applied nested glass styling to desktop navigation buttons (`Home`, `For You`, `Search`, `Reviews`, `Favorites`, and logo) with delicate rim borders, gradient backgrounds, and icon integration.
+   - Applied physical liquid button press dynamics to mobile floating bottom tab buttons.
+   - Preserved 100% of the original floating pill (`layoutId="fluid-glass-nav-pill"` and `layoutId="fluid-glass-mobile-pill"`) with spring motion.
+   - Preserved 100% of routing and touch tracking functionalities.
+2. Verified TypeScript types (`pnpm run typecheck`).
+3. Verified full production build (`pnpm --filter @workspace/cinefy run build`).
 
 ## Next Immediate Action
 
-- Run dev server (`pnpm --filter @workspace/cinefy run dev`) and test mobile touch navigation interaction in responsive touch emulation mode.
+- Await user review and confirmation before git push.
 

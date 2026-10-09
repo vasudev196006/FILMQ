@@ -7,7 +7,7 @@
 
 ## Current State
 
-- **Git Status**: Local main at `7f1e81a` (ahead of `origin/main` by 1 commit), pushed to `filmqbackup/main`.
+- **Git Status**: Local main is at `5323ee5` and fully up to date with `origin/main`, `filmqbackup/main`, and `mob/main`.
 - **Official Brand Title**: **FILMQ**
 - **Replit Cleaned**: Removed 100% of `@replit/*` plugins, dev packages, connectors, lockfile entries, and Replit prompt files from the repository.
 - **Theme Color**: Iconic **Netflix Crimson Red (`#E50914`)**, Obsidian Slate, and Crisp White.
@@ -31,4 +31,5 @@
 - **Touch Event Bubble Fix**: Added touch propagation intercepts to movie cards' quick-action buttons to prevent accidental card navigation when toggling favorites/watchlist on mobile.
 - **Personalized Recommendation Engine**: Built a "For You" system (`GET /api/recommendations`) that analyzes reviews and favorites to build a weighted genre affinity profile, fetches TMDB movie recommendations + genre-based movie/TV discovery, deduplicates, scores, and returns top 20 movies + 10 TV shows with 5-minute server-side caching. New `/for-you` page with movie/TV carousels, taste profile bar chart, and empty state. Added "For You" nav tab with Sparkles icon.
 - **Mobile Touch-Based Navigation Interaction**: Implemented immediate touch start feedback, smooth 60 FPS real-time finger tracking across bottom navigation items, touch release navigation activation, and touch cancel safety handling in `Navbar.tsx` while preserving 100% of desktop layout and animations.
+- **Liquid Glass Navbar Buttons Redesign**: Redesigned desktop and mobile navigation buttons (`Home`, `For You`, `Search`, `Reviews`, `Favorites`, and brand logo) according to `liquid_buttons_details.md` specification with physical spring physics (`translateY(-1px)` hover, `translateY(1px) scale(0.98)` active), nested glass refraction sheen, SF Pro Display / Apple typography, text shadows (`0 1px 3px rgba(0,0,0,0.25)`), and elevated container shadow, while preserving 100% of original routing functionalities, mobile touch tracking, and the floating glass pill indicator.
 
