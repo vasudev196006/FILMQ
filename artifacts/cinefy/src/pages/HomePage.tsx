@@ -85,20 +85,28 @@ export const HomePage: React.FC = () => {
       <section className="relative min-h-[460px] md:h-[80vh] md:min-h-[600px] flex items-end pb-12 md:pb-20 pt-28 md:pt-32">
         {heroMovie && (
           <>
-            {/* Blurred Atmospheric Background Backdrop */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
+            {/* Netflix-style Cinematic Backdrop Photo (Crisp & Unblurred across Mobile & Desktop) */}
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
               <img 
                 src={`${IMAGE_BASE}original${heroMovie.backdrop_path || heroMovie.poster_path}`} 
                 alt={heroMovie.title}
-                className="w-full h-full object-cover filter blur-lg opacity-25 scale-105"
+                className="w-full h-[65%] md:h-full object-cover object-top md:object-[center_25%] opacity-90 transition-opacity duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 to-transparent"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent"></div>
+              {/* Universal Top ambient gradient for navbar contrast */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/25 via-25% to-transparent" />
+
+              {/* Mobile-specific vertical cinematic fade: clear image at top, smooth fade towards bottom text */}
+              <div className="md:hidden absolute inset-0 bg-gradient-to-t from-background via-background/85 via-40% to-transparent" />
+
+              {/* Desktop-specific horizontal vignette: dark on left for text legibility, clear photo on right */}
+              <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-background via-background/70 via-40% to-transparent" />
+              {/* Desktop-specific bottom fade into dark background & carousels */}
+              <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-background via-background/60 via-30% to-transparent" />
             </div>
 
-            <div className="container mx-auto px-4 md:px-8 relative z-10 w-full flex flex-col md:flex-row gap-6 items-center md:items-end">
+            <div className="container mx-auto px-4 md:px-8 relative z-10 w-full flex flex-col md:flex-row gap-5 md:gap-8 items-center md:items-end">
               {/* Scaled-down Movie Poster Card */}
-              <div className="w-28 sm:w-36 md:w-48 shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/15 aspect-[2/3] bg-slate-900">
+              <div className="w-28 sm:w-36 md:w-48 shrink-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.85)] border border-white/20 aspect-[2/3] bg-slate-900 ring-1 ring-white/10">
                 <img 
                   src={`${IMAGE_BASE}w500${heroMovie.poster_path}`} 
                   alt={heroMovie.title}
@@ -107,35 +115,35 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* Movie Details */}
-              <div className="flex-1 max-w-2xl text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
-                  <div className="px-3.5 py-1 flex items-center gap-1.5 text-xs font-bold text-white bg-primary rounded-full uppercase tracking-wider shadow-md">
+              <div className="flex-1 max-w-2xl text-center md:text-left drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-3 md:mb-4">
+                  <div className="px-3.5 py-1 flex items-center gap-1.5 text-xs font-bold text-white bg-primary rounded-full uppercase tracking-wider shadow-lg shadow-red-950/50">
                     #1 Trending
                   </div>
-                  <div className="glass-pill px-3.5 py-1 flex items-center gap-1.5 text-foreground text-xs font-bold border border-black/10 dark:border-white/20">
+                  <div className="glass-pill px-3.5 py-1 flex items-center gap-1.5 text-white text-xs font-bold border border-white/20 bg-black/50 backdrop-blur-md shadow-md">
                     <Star className="size-3.5 fill-primary text-primary" />
                     {heroMovie.vote_average.toFixed(1)} TMDB
                   </div>
                 </div>
                 
-                <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-foreground mb-3 md:mb-4 leading-tight drop-shadow-lg">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-white mb-3 md:mb-4 leading-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
                   {heroMovie.title}
                 </h1>
                 
-                <p className="text-sm sm:text-base md:text-lg text-foreground/80 mb-6 md:mb-8 line-clamp-3 leading-relaxed max-w-xl mx-auto md:mx-0">
+                <p className="text-sm sm:text-base md:text-lg text-slate-200 mb-6 md:mb-8 line-clamp-3 leading-relaxed max-w-xl mx-auto md:mx-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                   {heroMovie.overview}
                 </p>
                 
-                <div className="flex items-center justify-center md:justify-start gap-4">
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4">
                   <Link href={`/movie/${heroMovie.id}`} className="cursor-pointer">
-                    <div className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 flex items-center gap-2 bg-primary hover:opacity-90 shadow-lg">
+                    <div className="relative group overflow-hidden px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 flex items-center gap-2 bg-primary hover:bg-primary/90 shadow-xl shadow-red-900/40 hover:scale-105 active:scale-95">
                       <Play className="size-4 relative z-10 fill-white" />
                       <span className="relative z-10">Movie Details</span>
                     </div>
                   </Link>
                   
                   <Link href={`/movie/${heroMovie.id}`} className="cursor-pointer">
-                    <div className="px-6 py-3 rounded-full glass-panel hover:bg-black/10 dark:hover:bg-white/10 text-foreground text-sm font-semibold transition-all flex items-center gap-2 border border-black/15 dark:border-white/20">
+                    <div className="px-6 py-3 rounded-full glass-panel hover:bg-white/10 text-white text-sm font-semibold transition-all flex items-center gap-2 border border-white/20 bg-black/50 backdrop-blur-md hover:scale-105 active:scale-95 shadow-xl">
                       <Edit3 className="size-4" />
                       Write a Review
                     </div>

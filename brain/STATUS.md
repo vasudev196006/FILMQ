@@ -33,6 +33,7 @@
 - **Mobile Touch-Based Navigation Interaction**: Implemented immediate touch start feedback, smooth 60 FPS real-time finger tracking across bottom navigation items, touch release navigation activation, and touch cancel safety handling in `Navbar.tsx` while preserving 100% of desktop layout and animations.
 - **Liquid Glass Navbar Buttons Redesign**: Redesigned desktop and mobile navigation buttons (`Home`, `For You`, `Search`, `Reviews`, `Favorites`, and brand logo) according to `liquid_buttons_details.md` specification with physical spring physics (`translateY(-1px)` hover, `translateY(1px) scale(0.98)` active), nested glass refraction sheen, SF Pro Display / Apple typography, text shadows (`0 1px 3px rgba(0,0,0,0.25)`), and elevated container shadow, while preserving 100% of original routing functionalities, mobile touch tracking, and the floating glass pill indicator.
 - **Supabase Database Connection Restored & Verified**: Updated `DATABASE_URL` to the active project (`rgsqhbmpjkrffvomlevo`), confirmed automatic schema alignment, and verified `GET /api/recommendations` end-to-end with live data (4 reviews, 3 favorites, generating ranked movie affinities with 200 OK).
+- **Netflix-Style Cinematic Hero Backdrop (Desktop & Mobile)**: Replaced blurred dark background on the homepage hero with a crisp, unblurred cinematic high-res photo backdrop featuring Netflix-style directional gradients (vertical fade from top photo into darkened text zone on mobile, left-to-right vignette on desktop, and seamless blend into obsidian canvas).
 
 
 
