@@ -19,11 +19,11 @@ export const StarRating = ({
   starSize
 }: StarRatingProps) => {
   const [hover, setHover] = useState<number | null>(null);
-  const sizeClass = starSize || (readOnly ? 'size-4' : 'size-6');
+  const sizeClass = starSize || (readOnly ? 'size-4' : 'size-5 sm:size-6');
   
   return (
-    <div className={`flex flex-col gap-2 items-center ${className}`} data-testid="star-rating">
-      <div className="flex items-center gap-1" onMouseLeave={() => setHover(null)}>
+    <div className={`flex flex-col gap-2 items-center w-full ${className}`} data-testid="star-rating">
+      <div className="flex items-center justify-center gap-1 sm:gap-1.5 max-w-full" onMouseLeave={() => setHover(null)}>
         {Array.from({ length: total }).map((_, i) => {
           const ratingValue = i + 1;
           const isFilled = (hover || value) >= ratingValue;

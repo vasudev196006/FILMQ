@@ -329,7 +329,7 @@ export const MovieDetailPage: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Rating</label>
-                <div className="glass-panel inline-flex p-3 rounded-xl border border-black/10 dark:border-white/15">
+                <div className="glass-panel w-full p-3 rounded-xl border border-black/10 dark:border-white/15 flex flex-col items-center justify-center">
                   <StarRating value={reviewRating} onChange={setReviewRating} />
                 </div>
               </div>
