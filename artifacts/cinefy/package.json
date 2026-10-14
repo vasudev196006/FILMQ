@@ -74,7 +74,10 @@
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
+    "@types/gsap": "^3.0.0",
     "@types/three": "^0.185.1",
+    "gsap": "^3.15.0",
+    "liquid-gl": "^3.0.0",
     "maath": "^0.10.8",
     "three": "^0.185.1"
   }

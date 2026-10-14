@@ -229,3 +229,20 @@
 .animate-heart-pop {
   animation: heart-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
 }
+
+/* liquidGL Menu Bar Lens */
+.liquid-nav-lens {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  border-radius: 9999px;
+  will-change: left, width, transform;
+  cursor: grab;
+  touch-action: none;
+  z-index: 5;
+  pointer-events: auto;
+}
+.liquid-nav-lens:active {
+  cursor: grabbing;
+}
+
