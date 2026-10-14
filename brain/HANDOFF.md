@@ -7,22 +7,21 @@
 
 ## Active Focus
 
-- Netflix-style crisp backdrop photo implemented for the hero section on HomePage.
+- Tilt effect removed from title cards (`MovieCard` and `TVShowCard`) across PC and mobile.
+- Awaiting user's explicit `git push main` command before pushing to remote repository.
 
 ## What was accomplished
 
 1. Restored active Supabase database connection (`rgsqhbmpjkrffvomlevo`) in [.env](file:///c:/projects/filmq/.env).
 2. Successfully synchronized schema and verified table structures (`reviews` & `favorites`).
 3. Tested `GET /api/recommendations` end-to-end: verified that the engine processes existing user reviews and favorites, builds the weighted taste profile, fetches TMDB candidates, scores, deduplicates, and serves recommendations with 200 OK.
-4. Converted the homepage hero section from a heavily blurred dark background to a crisp, unblurred Netflix-style cinematic backdrop photo matching the user's reference:
-   - Preserves high-definition backdrop still from TMDB (`backdrop_path`).
-   - Applied directional Netflix vignettes (left-to-right fade for text readability, top navbar shadow, and bottom gradient into dark obsidian background).
-   - Elevated text contrast, button micro-interactions, and poster card depth.
-5. Confirmed TypeScript typecheck (`pnpm run typecheck`) and production build passing (`pnpm --filter @workspace/cinefy run build`).
+4. Converted the homepage hero section from a heavily blurred dark background to a crisp, unblurred Netflix-style cinematic backdrop photo matching the user's reference (both desktop and mobile).
+5. Removed 3D tilt effects, spring calculations, and rotational perspective from title cards (`MovieCard` and `TVShowCard`), replacing them with smooth, responsive flat containers with clean 2D hover scaling.
+6. Confirmed TypeScript typecheck (`pnpm run typecheck`) and production build passing (`pnpm --filter @workspace/cinefy run build`).
 
 ## Next Immediate Action
 
-- Await user review and confirmation.
+- Await user command to `git push main`.
 
 
 

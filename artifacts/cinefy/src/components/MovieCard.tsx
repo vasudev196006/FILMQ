@@ -3,7 +3,6 @@ import { Link } from 'wouter';
 import { BookmarkCheck, BookmarkPlus, Heart, Film } from 'lucide-react';
 import { useMovieActions } from '@/hooks/useMovieActions';
 import { IMAGE_BASE } from '@/lib/tmdb';
-import TiltedCard from '@/components/TiltedCard';
 
 export interface Movie {
   id: string;
@@ -30,17 +29,10 @@ export const MovieCard: React.FC<{
   const [isHoveringRate, setIsHoveringRate] = useState(false);
 
   const innerContent = (
-    <TiltedCard
-      containerWidth="100%"
-      containerHeight="100%"
-      imageWidth="100%"
-      imageHeight="100%"
-      rotateAmplitude={14}
-      scaleOnHover={1.04}
-      showMobileWarning={false}
-      showTooltip={false}
+    <div 
+      className="group relative w-full h-full rounded-3xl overflow-hidden border border-white/15 bg-slate-950 shadow-xl transition-all duration-300 ease-out hover:scale-[1.03] hover:shadow-2xl hover:border-white/30" 
+      data-testid={`movie-card-${movie.id}`}
     >
-      <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/15 bg-slate-950 shadow-xl" data-testid={`movie-card-${movie.id}`}>
         {movie.poster && movie.poster.includes('null') ? (
           <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
             <Film className="size-16 text-white/20" />
@@ -135,7 +127,6 @@ export const MovieCard: React.FC<{
           </div>
         </div>
       </div>
-    </TiltedCard>
   );
 
   if (movie.href) {
