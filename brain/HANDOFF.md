@@ -7,27 +7,20 @@
 
 ## Active Focus
 
-- `liquidGL` draggable liquid glass menu bar lens adapted into Navbar and verified via build and typecheck.
+- Supabase database connected and recommendation engine verified live with real user data.
 
 ## What was accomplished
 
-1. Installed `liquid-gl` and `gsap` in `@workspace/cinefy`.
-2. Created TypeScript definition file [liquid-gl.d.ts](file:///c:/projects/filmq/artifacts/cinefy/src/types/liquid-gl.d.ts).
-3. Added `.liquid-nav-lens` styles to [index.css](file:///c:/projects/filmq/artifacts/cinefy/src/index.css).
-4. Adapted the `menu-bar.html` demo from `naughtyduk/liquidGL` into [Navbar.tsx](file:///c:/projects/filmq/artifacts/cinefy/src/components/Navbar.tsx):
-   - Real-time WebGPU/WebGL physical refraction with automatic fallback.
-   - Chromatic aberration (`aberration: 0.85`), bevel reflections, specular highlights, and crimson refraction tint (`rgba(229, 9, 20, 0.16)`).
-   - Draggable liquid lens (`draggable: true`) with viscous pointer displacement (`interaction: "fluid"`).
-   - Horizontal clamping and velocity-based elastic stretch during drag.
-   - GSAP spring snap (`elastic.out(1, 0.7)`) to the nearest tab on release and automatic wouter route transition.
-   - Click-to-snap and keyboard arrow navigation (Left/Right) between tabs.
-   - Preserved mobile touch tracking on the floating bottom bar.
-5. Verified TypeScript types (`pnpm run typecheck`) — 0 errors.
-6. Verified production build (`pnpm --filter @workspace/cinefy run build`) — successful.
+1. Restored active Supabase database connection (`rgsqhbmpjkrffvomlevo`) in [.env](file:///c:/projects/filmq/.env).
+2. Successfully synchronized schema and verified table structures (`reviews` & `favorites`).
+3. Tested `GET /api/recommendations` end-to-end: verified that the engine processes existing user reviews and favorites, builds the weighted taste profile, fetches TMDB candidates, scores, deduplicates, and serves recommendations with 200 OK.
+4. Confirmed full TypeScript typecheck (`pnpm run typecheck`) and API server build passing.
+5. Reverted experimental liquidGL menu bar change and restored the original physical liquid glass navbar.
 
 ## Next Immediate Action
 
-- Await user testing and review (per user instruction: do not git push main until told).
+- Await user review and confirmation.
+
 
 
 
