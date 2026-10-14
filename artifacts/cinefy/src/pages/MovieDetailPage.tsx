@@ -322,7 +322,7 @@ export const MovieDetailPage: React.FC = () => {
                   value={reviewName}
                   onChange={e => setReviewName(e.target.value)}
                   className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                  placeholder="e.g. John Doe"
+                  placeholder="e.g. Vasu"
                   required
                 />
               </div>
