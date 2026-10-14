@@ -40,4 +40,5 @@
 - **Taste Profile Normalized Out of 10 & Real-Time Sync**: Normalized taste profile affinity scores to a clean 1.0–10.0 scale with static TMDB genre dictionary fallback, added real-time query invalidation on mutation events, and added `ratingsSum` checksum cache validation.
 - **Spoiler Shroud Complete Border Coverage**: Set min-height and full edge-to-edge backdrop styling on spoiler review bodies in `ReviewCard`, fixing stroke clipping and cutoff on short texts.
 - **Instant Reviews & Favorites SWR Client Cache**: Built instant 0ms localStorage + memory SWR caching with optimistic mutations for `getReviews()` and `getFavorites()`, providing instant page renders with background revalidation.
+- **For You Page Header Clean Up**: Removed icon container and sparkles decoration from the "Picked For You" header, empty state, and loading section for a clean, distraction-free typographic layout.
 

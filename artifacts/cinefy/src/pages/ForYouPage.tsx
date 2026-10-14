@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'wouter';
-import { Sparkles, Search, TrendingUp, Film, Tv } from 'lucide-react';
+import { Search, TrendingUp, Film, Tv } from 'lucide-react';
 import { MovieCard } from '@/components/MovieCard';
 import { TVShowCard, type TVShow } from '@/components/TVShowCard';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
@@ -59,7 +59,7 @@ const EmptyState: React.FC = () => (
   <div className="min-h-[60vh] flex items-center justify-center px-4">
     <div className="text-center max-w-md">
       <div className="size-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#E50914]/20 to-indigo-500/20 border border-white/10 flex items-center justify-center">
-        <Sparkles className="size-10 text-[#E50914]" />
+        <Film className="size-10 text-[#E50914]" />
       </div>
 
       <h2 className="text-2xl font-serif text-white mb-3">
@@ -141,18 +141,13 @@ export const ForYouPage: React.FC = () => {
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="size-12 rounded-2xl bg-gradient-to-br from-[#E50914] to-[#ff4d56] flex items-center justify-center shadow-lg shadow-[#E50914]/30">
-              <Sparkles className="size-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-serif text-foreground leading-tight">
-                Picked For You
-              </h1>
-              <p className="text-sm text-foreground/60 mt-0.5">
-                Personalized recommendations based on your taste
-              </p>
-            </div>
+          <div className="mb-4">
+            <h1 className="text-3xl md:text-4xl font-serif text-foreground leading-tight">
+              Picked For You
+            </h1>
+            <p className="text-sm text-foreground/60 mt-0.5">
+              Personalized recommendations based on your taste
+            </p>
           </div>
 
           {/* Genre affinity pills */}
@@ -178,8 +173,7 @@ export const ForYouPage: React.FC = () => {
       <div className="relative z-20">
         {isLoading && (
           <div className="container mx-auto px-4 md:px-8 py-8">
-            <h2 className="text-2xl font-serif text-foreground mb-6 flex items-center gap-3">
-              <Sparkles className="size-5 text-[#E50914]" />
+            <h2 className="text-2xl font-serif text-foreground mb-6">
               Loading your recommendations...
             </h2>
             <div className="flex gap-4 md:gap-6 overflow-x-hidden">
