@@ -77,29 +77,33 @@ export const ReviewsPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
             {reviews.map(review => (
               editingId === review.id ? (
-                <div key={review.id} className="glass-panel p-5 rounded-2xl flex flex-col gap-4 text-left w-full">
-                  <div className="flex items-center gap-3 border-b border-white/10 pb-3 mb-1">
+                <div key={review.id} className="relative w-full rounded-2xl bg-slate-900/80 backdrop-blur-2xl border border-white/15 p-4 sm:p-5 flex flex-col gap-4 text-left shadow-[0_8px_30px_rgb(0,0,0,0.4)] overflow-hidden">
+                  <div className="flex items-center gap-3.5 border-b border-white/10 pb-3">
                     {review.moviePosterPath ? (
-                      <img src={`https://image.tmdb.org/t/p/w92${review.moviePosterPath}`} alt={review.movieTitle} className="w-10 h-14 object-cover rounded-md" />
+                      <img src={`https://image.tmdb.org/t/p/w185${review.moviePosterPath}`} alt={review.movieTitle} className="w-12 h-16 sm:w-14 sm:h-20 object-cover rounded-xl shadow-md border border-white/10 ring-1 ring-white/5 shrink-0" />
                     ) : (
-                      <div className="w-10 h-14 bg-white/5 rounded-md" />
+                      <div className="w-12 h-16 sm:w-14 sm:h-20 bg-white/5 border border-white/10 rounded-xl shrink-0 flex items-center justify-center text-white/30 text-xs">
+                        No Poster
+                      </div>
                     )}
-                    <div>
-                      <h4 className="text-sm font-semibold text-white">Editing: {review.movieTitle}</h4>
+                    <div className="min-w-0 flex-1">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-primary">Editing Review</span>
+                      <h4 className="text-sm sm:text-base font-semibold text-white truncate leading-snug">{review.movieTitle}</h4>
                     </div>
                   </div>
                   
                   <div>
-                    <label className="block text-xs font-medium text-slate-400 mb-1">Rating</label>
-                    <StarRating value={editForm.rating} onChange={(val) => setEditForm(prev => ({ ...prev, rating: val }))} />
+                    <label className="block text-xs font-medium text-slate-400 mb-1.5">Rating</label>
+                    <StarRating value={editForm.rating} onChange={(val) => setEditForm(prev => ({ ...prev, rating: val }))} className="items-start" />
                   </div>
                   
                   <div>
-                    <label className="block text-xs font-medium text-slate-400 mb-1">Review</label>
+                    <label className="block text-xs font-medium text-slate-400 mb-1.5">Your Review</label>
                     <textarea 
                       value={editForm.text}
                       onChange={e => setEditForm(prev => ({ ...prev, text: e.target.value }))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-red-500 focus:bg-white/10 transition-all min-h-[100px] resize-none text-sm"
+                      className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-primary/60 focus:bg-black/60 transition-all min-h-[110px] resize-none text-sm placeholder:text-slate-500"
+                      placeholder="Share your thoughts..."
                     />
                   </div>
 
@@ -107,7 +111,7 @@ export const ReviewsPage: React.FC = () => {
                     <button 
                        type="button"
                        onClick={() => setEditForm(prev => ({ ...prev, isSpoiler: !prev.isSpoiler }))}
-                       className={`size-5 rounded flex items-center justify-center transition-all ${editForm.isSpoiler ? 'bg-[#E50914] text-white' : 'bg-white/10 border border-white/20'}`}
+                       className={`size-5 rounded flex items-center justify-center transition-all cursor-pointer ${editForm.isSpoiler ? 'bg-[#E50914] text-white shadow-sm' : 'bg-white/10 border border-white/20'}`}
                     >
                       {editForm.isSpoiler && <Check className="size-3" />}
                     </button>
@@ -116,16 +120,16 @@ export const ReviewsPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 mt-2 pt-3 border-t border-white/5">
+                  <div className="flex items-center gap-2 mt-1 pt-3 border-t border-white/10">
                     <button 
                       onClick={saveEdit}
-                      className="px-4 py-1.5 rounded-full bg-[#E50914] text-white text-xs font-medium hover:bg-[#D81F26] transition-all flex items-center gap-1.5"
+                      className="px-4 py-1.5 rounded-full bg-[#E50914] text-white text-xs font-medium hover:bg-[#D81F26] active:scale-95 transition-all flex items-center gap-1.5 shadow-md cursor-pointer"
                     >
                       <Check className="size-3.5" /> Save
                     </button>
                     <button 
                       onClick={cancelEdit}
-                      className="px-4 py-1.5 rounded-full bg-white/10 text-slate-300 text-xs font-medium hover:bg-white/20 transition-all flex items-center gap-1.5"
+                      className="px-4 py-1.5 rounded-full bg-white/10 text-slate-300 text-xs font-medium hover:bg-white/15 active:scale-95 transition-all flex items-center gap-1.5 border border-white/10 cursor-pointer"
                     >
                       <X className="size-3.5" /> Cancel
                     </button>

@@ -7,7 +7,7 @@
 
 ## Current State
 
-- **Git Status**: Local main is pushed to `origin/main` at `25a6d66`.
+- **Git Status**: Local main is pushed to `origin/main` at `8c131fd`.
 - **Official Brand Title**: **FILMQ**
 - **Replit Cleaned**: Removed 100% of `@replit/*` plugins, dev packages, connectors, lockfile entries, and Replit prompt files from the repository.
 - **Theme Color**: Iconic **Netflix Crimson Red (`#E50914`)**, Obsidian Slate, and Crisp White.
@@ -35,3 +35,5 @@
 - **Supabase Database Connection Restored & Verified**: Updated `DATABASE_URL` to the active project (`rgsqhbmpjkrffvomlevo`), confirmed automatic schema alignment, and verified `GET /api/recommendations` end-to-end with live data (4 reviews, 3 favorites, generating ranked movie affinities with 200 OK).
 - **Netflix-Style Cinematic Hero Backdrop (Desktop & Mobile)**: Replaced blurred dark background on the homepage hero with a crisp, unblurred cinematic high-res photo backdrop featuring Netflix-style directional gradients (vertical fade from top photo into darkened text zone on mobile, left-to-right vignette on desktop, and seamless blend into obsidian canvas).
 - **Tilt Effect Removed from Title Cards (PC & Mobile)**: Removed 3D perspective rotation, mouse/touch spring listeners, and tilted card wrappers from `MovieCard` and `TVShowCard`, replacing them with clean, high-performance flat containers with smooth hover scale (`hover:scale-[1.03]`), eliminating 3D rotational distortion and touch friction across PC and mobile.
+- **Apple Design Review Cards & Mobile Date Overflow Fix**: Redesigned `ReviewCard` and editing form in `ReviewsPage` with Apple Human Interface standards (frosted glass container, tactile buttons with `active:scale-95`, responsive star sizing, score badge, and wrap-safe date layout), eliminating date clipping and boundary overflow on mobile.
+

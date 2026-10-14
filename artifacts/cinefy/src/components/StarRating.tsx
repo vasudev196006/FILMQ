@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
 import { Star } from 'lucide-react';
 
-export const StarRating = ({ value, onChange, readOnly = false, total = 10, className = "" }: { value: number, onChange?: (val: number) => void, readOnly?: boolean, total?: number, className?: string }) => {
+export interface StarRatingProps {
+  value: number;
+  onChange?: (val: number) => void;
+  readOnly?: boolean;
+  total?: number;
+  className?: string;
+  starSize?: string;
+}
+
+export const StarRating = ({
+  value,
+  onChange,
+  readOnly = false,
+  total = 10,
+  className = "",
+  starSize
+}: StarRatingProps) => {
   const [hover, setHover] = useState<number | null>(null);
+  const sizeClass = starSize || (readOnly ? 'size-4' : 'size-6');
   
   return (
     <div className={`flex flex-col gap-2 items-center ${className}`} data-testid="star-rating">
@@ -13,7 +30,7 @@ export const StarRating = ({ value, onChange, readOnly = false, total = 10, clas
           return (
             <Star
               key={i}
-              className={`size-6 cursor-pointer transition-all ${isFilled ? 'fill-[#E50914] text-[#E50914]' : 'fill-transparent text-slate-600/50'} ${readOnly ? 'cursor-default size-4' : ''}`}
+              className={`${sizeClass} ${readOnly ? 'cursor-default' : 'cursor-pointer'} transition-all ${isFilled ? 'fill-[#E50914] text-[#E50914]' : 'fill-transparent text-slate-600/50'}`}
               onClick={() => !readOnly && onChange?.(ratingValue)}
               onMouseEnter={() => !readOnly && setHover(ratingValue)}
               data-testid={`star-${ratingValue}`}
