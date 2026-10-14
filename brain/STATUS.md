@@ -7,7 +7,7 @@
 
 ## Current State
 
-- **Git Status**: Local main is pushed to `origin/main` at `8c131fd`.
+- **Git Status**: Local main is pushed to `origin/main` at `88b20dd`.
 - **Official Brand Title**: **FILMQ**
 - **Replit Cleaned**: Removed 100% of `@replit/*` plugins, dev packages, connectors, lockfile entries, and Replit prompt files from the repository.
 - **Theme Color**: Iconic **Netflix Crimson Red (`#E50914`)**, Obsidian Slate, and Crisp White.
@@ -37,4 +37,7 @@
 - **Tilt Effect Removed from Title Cards (PC & Mobile)**: Removed 3D perspective rotation, mouse/touch spring listeners, and tilted card wrappers from `MovieCard` and `TVShowCard`, replacing them with clean, high-performance flat containers with smooth hover scale (`hover:scale-[1.03]`), eliminating 3D rotational distortion and touch friction across PC and mobile.
 - **Apple Design Review Cards & Mobile Date Overflow Fix**: Redesigned `ReviewCard` and editing form in `ReviewsPage` with Apple Human Interface standards (frosted glass container, tactile buttons with `active:scale-95`, responsive star sizing, score badge, and wrap-safe date layout), eliminating date clipping and boundary overflow on mobile.
 - **Review Rating Star Box Alignment**: Aligned the rating stars container in `MovieDetailPage` to `w-full` with responsive star sizing to match the exact boundaries of form inputs, and updated the name placeholder to `e.g. Vasu`.
+- **Taste Profile Normalized Out of 10 & Real-Time Sync**: Normalized taste profile affinity scores to a clean 1.0–10.0 scale with static TMDB genre dictionary fallback, added real-time query invalidation on mutation events, and added `ratingsSum` checksum cache validation.
+- **Spoiler Shroud Complete Border Coverage**: Set min-height and full edge-to-edge backdrop styling on spoiler review bodies in `ReviewCard`, fixing stroke clipping and cutoff on short texts.
+- **Instant Reviews & Favorites SWR Client Cache**: Built instant 0ms localStorage + memory SWR caching with optimistic mutations for `getReviews()` and `getFavorites()`, providing instant page renders with background revalidation.
 

@@ -11,7 +11,7 @@ export const FavoritesPage: React.FC = () => {
   const loadFavorites = async () => {
     try {
       const favs = await getFavorites();
-      const reversed = favs.reverse(); // newest first
+      const reversed = [...favs].reverse(); // newest first
       setFavorites(reversed);
 
       // Fetch missing metadata dynamically in the browser for legacy favorites
@@ -44,7 +44,11 @@ export const FavoritesPage: React.FC = () => {
   useEffect(() => {
     loadFavorites();
     window.addEventListener('storage', loadFavorites);
-    return () => window.removeEventListener('storage', loadFavorites);
+    window.addEventListener('filmq:favorites-updated', loadFavorites);
+    return () => {
+      window.removeEventListener('storage', loadFavorites);
+      window.removeEventListener('filmq:favorites-updated', loadFavorites);
+    };
   }, []);
 
   return (

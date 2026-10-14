@@ -31,14 +31,80 @@ export interface WatchlistItem {
 
 const STORAGE_KEYS = {
   WATCHLIST: 'cinefy_watchlist',
+  REVIEWS: 'filmq_cached_reviews',
+  FAVORITES: 'filmq_cached_favorites',
 };
 
-// --- REVIEWS ---
+// Real-time synchronization events
+export function notifyReviewsUpdated() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('filmq:reviews-updated'));
+    window.dispatchEvent(new Event('storage'));
+  }
+}
+
+export function notifyFavoritesUpdated() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('filmq:favorites-updated'));
+    window.dispatchEvent(new Event('storage'));
+  }
+}
+
+// --- REVIEWS (Fast SWR Cache) ---
+
+let reviewsCache: Review[] | null = null;
+let reviewsPromise: Promise<Review[]> | null = null;
+
+async function revalidateReviews(): Promise<Review[]> {
+  if (reviewsPromise) return reviewsPromise;
+
+  reviewsPromise = (async () => {
+    try {
+      const res = await fetch('/api/reviews', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to fetch reviews');
+      const freshReviews: Review[] = await res.json();
+      
+      const prev = JSON.stringify(reviewsCache || []);
+      const next = JSON.stringify(freshReviews);
+      reviewsCache = freshReviews;
+      try {
+        localStorage.setItem(STORAGE_KEYS.REVIEWS, next);
+      } catch {}
+
+      if (prev !== next) {
+        notifyReviewsUpdated();
+      }
+      return freshReviews;
+    } finally {
+      reviewsPromise = null;
+    }
+  })();
+
+  return reviewsPromise;
+}
 
 export async function getReviews(): Promise<Review[]> {
-  const res = await fetch('/api/reviews', { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to fetch reviews');
-  return res.json();
+  // 1. Instant in-memory cache
+  if (reviewsCache && reviewsCache.length > 0) {
+    revalidateReviews().catch(() => {});
+    return [...reviewsCache];
+  }
+
+  // 2. Instant localStorage cache
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.REVIEWS) : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        reviewsCache = parsed;
+        revalidateReviews().catch(() => {});
+        return [...parsed];
+      }
+    }
+  } catch {}
+
+  // 3. Fallback to network
+  return revalidateReviews();
 }
 
 export async function getReviewsForMovie(movieId: number): Promise<Review[]> {
@@ -48,37 +114,70 @@ export async function getReviewsForMovie(movieId: number): Promise<Review[]> {
 }
 
 export async function addReview(review: Review): Promise<void> {
+  // Optimistic update
+  reviewsCache = [review, ...(reviewsCache || [])];
+  try {
+    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviewsCache));
+  } catch {}
+  notifyReviewsUpdated();
+
   const res = await fetch('/api/reviews', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(review),
   });
-  if (!res.ok) throw new Error('Failed to add review');
+  if (!res.ok) {
+    revalidateReviews().catch(() => {});
+    throw new Error('Failed to add review');
+  }
 }
 
 export async function updateReview(id: string, changes: Partial<Review>): Promise<void> {
+  // Optimistic update
+  if (reviewsCache) {
+    reviewsCache = reviewsCache.map(r => r.id === id ? { ...r, ...changes } : r);
+    try {
+      localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviewsCache));
+    } catch {}
+    notifyReviewsUpdated();
+  }
+
   const res = await fetch(`/api/reviews/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(changes),
   });
-  if (!res.ok) throw new Error('Failed to update review');
+  if (!res.ok) {
+    revalidateReviews().catch(() => {});
+    throw new Error('Failed to update review');
+  }
 }
 
 export async function deleteReview(id: string): Promise<void> {
+  // Optimistic update
+  if (reviewsCache) {
+    reviewsCache = reviewsCache.filter(r => r.id !== id);
+    try {
+      localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviewsCache));
+    } catch {}
+    notifyReviewsUpdated();
+  }
+
   const res = await fetch(`/api/reviews/${id}`, {
     method: 'DELETE',
   });
-  if (!res.ok) throw new Error('Failed to delete review');
+  if (!res.ok) {
+    revalidateReviews().catch(() => {});
+    throw new Error('Failed to delete review');
+  }
 }
 
-// --- FAVORITES ---
+// --- FAVORITES (Fast SWR Cache) ---
 
 let favoritesCache: Favorite[] | null = null;
 let favoritesPromise: Promise<Favorite[]> | null = null;
 
-export async function getFavorites(): Promise<Favorite[]> {
-  if (favoritesCache) return favoritesCache;
+async function revalidateFavorites(): Promise<Favorite[]> {
   if (favoritesPromise) return favoritesPromise;
 
   favoritesPromise = (async () => {
@@ -95,7 +194,17 @@ export async function getFavorites(): Promise<Favorite[]> {
         voteAverage: fav.voteAverage,
         genres: fav.genres,
       }));
+
+      const prev = JSON.stringify(favoritesCache || []);
+      const next = JSON.stringify(mapped);
       favoritesCache = mapped;
+      try {
+        localStorage.setItem(STORAGE_KEYS.FAVORITES, next);
+      } catch {}
+
+      if (prev !== next) {
+        notifyFavoritesUpdated();
+      }
       return mapped;
     } finally {
       favoritesPromise = null;
@@ -105,22 +214,66 @@ export async function getFavorites(): Promise<Favorite[]> {
   return favoritesPromise;
 }
 
+export async function getFavorites(): Promise<Favorite[]> {
+  // 1. Instant in-memory cache
+  if (favoritesCache && favoritesCache.length > 0) {
+    revalidateFavorites().catch(() => {});
+    return [...favoritesCache];
+  }
+
+  // 2. Instant localStorage cache
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.FAVORITES) : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        favoritesCache = parsed;
+        revalidateFavorites().catch(() => {});
+        return [...parsed];
+      }
+    }
+  } catch {}
+
+  // 3. Fallback to network
+  return revalidateFavorites();
+}
+
 export async function addFavorite(favorite: Favorite): Promise<void> {
+  // Optimistic update
+  favoritesCache = [...(favoritesCache || []).filter(f => f.movieId !== favorite.movieId), favorite];
+  try {
+    localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favoritesCache));
+  } catch {}
+  notifyFavoritesUpdated();
+
   const res = await fetch('/api/favorites', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(favorite),
   });
-  if (!res.ok) throw new Error('Failed to add favorite');
-  favoritesCache = null; // Invalidate cache
+  if (!res.ok) {
+    revalidateFavorites().catch(() => {});
+    throw new Error('Failed to add favorite');
+  }
 }
 
 export async function removeFavorite(movieId: number): Promise<void> {
+  // Optimistic update
+  if (favoritesCache) {
+    favoritesCache = favoritesCache.filter(f => f.movieId !== movieId);
+    try {
+      localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favoritesCache));
+    } catch {}
+    notifyFavoritesUpdated();
+  }
+
   const res = await fetch(`/api/favorites/${movieId}`, {
     method: 'DELETE',
   });
-  if (!res.ok) throw new Error('Failed to remove favorite');
-  favoritesCache = null; // Invalidate cache
+  if (!res.ok) {
+    revalidateFavorites().catch(() => {});
+    throw new Error('Failed to remove favorite');
+  }
 }
 
 export async function isFavorite(movieId: number): Promise<boolean> {

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { Sparkles, Search, TrendingUp, Film, Tv } from 'lucide-react';
 import { MovieCard } from '@/components/MovieCard';
@@ -27,19 +27,19 @@ interface RecommendationResponse {
 // ── Fetch ──────────────────────────────────────────────────
 
 async function fetchRecommendations(): Promise<RecommendationResponse> {
-  const res = await fetch('/api/recommendations', { cache: 'no-store' });
+  const res = await fetch('/api/recommendations?refresh=true', { cache: 'no-store' });
   if (!res.ok) throw new Error('Failed to fetch recommendations');
   return res.json();
 }
 
 // ── Sub-components ─────────────────────────────────────────
 
-const GenreBar: React.FC<{ genre: GenreAffinity; maxScore: number }> = ({ genre, maxScore }) => {
-  const percentage = Math.min((genre.score / maxScore) * 100, 100);
+const GenreBar: React.FC<{ genre: GenreAffinity }> = ({ genre }) => {
+  const percentage = Math.min(Math.max((genre.score / 10) * 100, 6), 100);
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-sm font-medium text-white/80 w-20 text-right shrink-0 truncate">
+      <span className="text-sm font-medium text-white/80 w-24 text-right shrink-0 truncate">
         {genre.name}
       </span>
       <div className="flex-1 h-2.5 rounded-full bg-white/5 border border-white/10 overflow-hidden">
@@ -48,7 +48,9 @@ const GenreBar: React.FC<{ genre: GenreAffinity; maxScore: number }> = ({ genre,
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <span className="text-xs text-white/50 w-10 shrink-0">{genre.score.toFixed(1)}</span>
+      <span className="text-xs font-semibold text-white/80 w-14 shrink-0 text-right">
+        {genre.score.toFixed(1)} <span className="text-white/40 text-[10px]">/ 10</span>
+      </span>
     </div>
   );
 };
@@ -99,11 +101,31 @@ const HorizontalScrollRow: React.FC<{
 // ── Page ───────────────────────────────────────────────────
 
 export const ForYouPage: React.FC = () => {
+  const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ['recommendations'],
     queryFn: fetchRecommendations,
-    staleTime: 5 * 60 * 1000, // Match server cache TTL
+    staleTime: 0, // Keep in sync in real time
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
   });
+
+  // Listen to review and favorite changes across tabs and components
+  useEffect(() => {
+    const handleInvalidate = () => {
+      queryClient.invalidateQueries({ queryKey: ['recommendations'] });
+    };
+
+    window.addEventListener('storage', handleInvalidate);
+    window.addEventListener('filmq:favorites-updated', handleInvalidate);
+    window.addEventListener('filmq:reviews-updated', handleInvalidate);
+
+    return () => {
+      window.removeEventListener('storage', handleInvalidate);
+      window.removeEventListener('filmq:favorites-updated', handleInvalidate);
+      window.removeEventListener('filmq:reviews-updated', handleInvalidate);
+    };
+  }, [queryClient]);
 
   const hasData = data && (data.movies.length > 0 || data.tvShows.length > 0);
   const isEmpty = data && data.movies.length === 0 && data.tvShows.length === 0;
@@ -237,7 +259,6 @@ export const ForYouPage: React.FC = () => {
                       <GenreBar
                         key={genre.id}
                         genre={genre}
-                        maxScore={data.profile.topGenres[0].score}
                       />
                     ))}
                   </div>

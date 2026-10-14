@@ -23,7 +23,11 @@ export const ReviewsPage: React.FC = () => {
   useEffect(() => {
     loadReviews();
     window.addEventListener('storage', loadReviews);
-    return () => window.removeEventListener('storage', loadReviews);
+    window.addEventListener('filmq:reviews-updated', loadReviews);
+    return () => {
+      window.removeEventListener('storage', loadReviews);
+      window.removeEventListener('filmq:reviews-updated', loadReviews);
+    };
   }, []);
 
   const handleDelete = async (id: string) => {

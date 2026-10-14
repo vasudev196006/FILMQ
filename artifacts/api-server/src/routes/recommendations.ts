@@ -22,6 +22,7 @@ interface CachedResult {
   expiresAt: number;
   favCount: number;
   revCount: number;
+  ratingsSum: number;
 }
 
 let cache: CachedResult | null = null;
@@ -50,10 +51,42 @@ interface RecommendationResponse {
 
 // ── Genre ID resolution helpers ────────────────────────────
 
+const DEFAULT_GENRE_MAP = new Map<number, string>([
+  [28, "Action"],
+  [12, "Adventure"],
+  [16, "Animation"],
+  [35, "Comedy"],
+  [80, "Crime"],
+  [99, "Documentary"],
+  [18, "Drama"],
+  [10751, "Family"],
+  [14, "Fantasy"],
+  [36, "History"],
+  [27, "Horror"],
+  [10402, "Music"],
+  [9648, "Mystery"],
+  [10749, "Romance"],
+  [878, "Sci-Fi"],
+  [10770, "TV Movie"],
+  [53, "Thriller"],
+  [10752, "War"],
+  [37, "Western"],
+  [10759, "Action & Adventure"],
+  [10762, "Kids"],
+  [10763, "News"],
+  [10764, "Reality"],
+  [10765, "Sci-Fi & Fantasy"],
+  [10766, "Soap"],
+  [10767, "Talk"],
+  [10768, "War & Politics"],
+]);
+
 let genreMapCache: Map<number, string> | null = null;
 
 async function getGenreMap(): Promise<Map<number, string>> {
   if (genreMapCache) return genreMapCache;
+
+  const map = new Map<number, string>(DEFAULT_GENRE_MAP);
 
   try {
     const [movieGenres, tvGenres] = await Promise.all([
@@ -61,7 +94,6 @@ async function getGenreMap(): Promise<Map<number, string>> {
       fetchTVGenres(),
     ]);
 
-    const map = new Map<number, string>();
     for (const g of movieGenres) map.set(g.id, g.name);
     for (const g of tvGenres) map.set(g.id, g.name);
     genreMapCache = map;
@@ -72,7 +104,7 @@ async function getGenreMap(): Promise<Map<number, string>> {
 
     return map;
   } catch {
-    return new Map<number, string>();
+    return map;
   }
 }
 
@@ -161,19 +193,28 @@ async function buildGenreProfile(
     }
   }
 
-  const affinities: GenreAffinity[] = [];
+  const rawScores: { id: number; raw: number }[] = [];
   for (const [id, score] of scores.entries()) {
     if (score > 0) {
-      affinities.push({
-        id,
-        name: genreMap.get(id) || `Genre ${id}`,
-        score: Math.round(score * 100) / 100,
-      });
+      rawScores.push({ id, raw: score });
     }
   }
 
-  affinities.sort((a, b) => b.score - a.score);
-  return affinities.slice(0, 10); // Top 10 genres
+  rawScores.sort((a, b) => b.raw - a.raw);
+  const maxRaw = rawScores[0]?.raw || 1;
+
+  const affinities: GenreAffinity[] = [];
+  for (const item of rawScores.slice(0, 10)) {
+    // Normalized out of 10.0 with 1 decimal place
+    const normalized = Math.min(10, Math.max(1, (item.raw / maxRaw) * 10));
+    affinities.push({
+      id: item.id,
+      name: genreMap.get(item.id) || `Genre ${item.id}`,
+      score: Math.round(normalized * 10) / 10,
+    });
+  }
+
+  return affinities;
 }
 
 // ── Batch helper for concurrent requests ──────────────────
@@ -194,7 +235,7 @@ async function batchFetch<T, R>(
 
 // ── Main endpoint ──────────────────────────────────────────
 
-router.get("/recommendations", async (_req, res, next) => {
+router.get("/recommendations", async (req, res, next) => {
   try {
     // 1. Fetch all reviews and favorites from DB
     const [reviews, favorites] = await Promise.all([
@@ -208,12 +249,17 @@ router.get("/recommendations", async (_req, res, next) => {
       }).from(favoritesTable),
     ]);
 
-    // Check cache invalidation against item counts
+    const ratingsSum = reviews.reduce((sum, r) => sum + (r.rating || 0), 0);
+    const forceRefresh = req.query.refresh === 'true';
+
+    // Check cache invalidation against item counts, rating sum, and explicit refresh
     if (
+      !forceRefresh &&
       cache &&
       Date.now() < cache.expiresAt &&
       cache.favCount === favorites.length &&
-      cache.revCount === reviews.length
+      cache.revCount === reviews.length &&
+      (cache as any).ratingsSum === ratingsSum
     ) {
       res.json(cache.data);
       return;
@@ -349,6 +395,7 @@ router.get("/recommendations", async (_req, res, next) => {
       expiresAt: Date.now() + CACHE_TTL_MS,
       favCount: favorites.length,
       revCount: reviews.length,
+      ratingsSum,
     };
 
     logger.info(

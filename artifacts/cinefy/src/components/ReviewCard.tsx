@@ -98,16 +98,20 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
       </div>
 
       {/* Review Body */}
-      <div className="relative rounded-xl overflow-hidden mt-1">
-        <p className={`text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-normal ${isBlurred ? 'filter blur-md select-none pointer-events-none opacity-40 transition-all duration-500' : 'transition-all duration-500 blur-0 opacity-100'}`}>
+      <div className={`relative rounded-xl overflow-hidden mt-1 w-full ${isBlurred ? 'min-h-[105px] border border-red-500/30 bg-red-950/15' : ''}`}>
+        <p className={`text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-normal ${isBlurred ? 'filter blur-md select-none pointer-events-none opacity-20 p-3 line-clamp-3' : 'transition-all duration-300 blur-0 opacity-100'}`}>
           {review.text}
         </p>
 
         {isBlurred && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 backdrop-blur-xl bg-slate-950/70 p-4 border border-red-500/30 rounded-xl z-10">
+          <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-2 backdrop-blur-md p-3 text-center z-10">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-400">
+              <span className="size-1.5 rounded-full bg-red-500 animate-pulse" />
+              Spoiler Content
+            </span>
             <button 
               onClick={() => setShroudOpen(true)}
-              className="px-4 py-2 rounded-full bg-red-500/20 hover:bg-red-500/30 active:scale-95 border border-red-400/40 text-red-200 text-xs font-semibold cursor-pointer transition-all flex items-center gap-1.5 shadow-md"
+              className="px-4 py-1.5 rounded-full bg-red-600/25 hover:bg-red-600/35 active:scale-95 border border-red-500/50 text-red-100 text-xs font-semibold cursor-pointer transition-all flex items-center gap-1.5 shadow-md shadow-red-950/50"
             >
               <Eye className="size-3.5" /> Reveal Spoiler
             </button>
